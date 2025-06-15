@@ -4,123 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trace Privacy Policy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+            color: #1f2937; /* text-gray-800 */
+        }
+        .container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
+            margin: 0 auto;
         }
-        h1, h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+        h1, h2, h3 {
+            font-weight: 700;
+            color: #111827; /* text-gray-900 */
         }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        h1 { font-size: 2.25rem; line-height: 2.5rem; }
+        h2 { font-size: 1.5rem; line-height: 2rem; margin-top: 2.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem;}
+        h3 { font-size: 1.25rem; line-height: 1.75rem; margin-top: 2rem;}
+        p, li {
+            line-height: 1.75;
+            color: #374151; /* text-gray-700 */
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        a {
+            color: #4f46e5; /* indigo-600 */
+            text-decoration: none;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+        a:hover {
+            text-decoration: underline;
         }
-        th {
-            background-color: #f9f9f9;
+        strong {
+            color: #111827;
+        }
+        .summary-box {
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        .summary-box li {
+            padding-left: 1.75rem;
+            position: relative;
+        }
+        .summary-box li::before {
+            content: '';
+            position: absolute;
+            left: 0.25rem;
+            top: 0.6rem;
+            width: 1rem;
+            height: 1rem;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        .summary-box li.positive::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2334D399'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clip-rule='evenodd' /%3E%3C/svg%3E");
+        }
+        .summary-box li.negative::before {
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23F87171'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z' clip-rule='evenodd' /%3E%3C/svg%3E");
+        }
+        .summary-box li.neutral::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2360A5FA'%3E%3Cpath fill-rule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z' clip-rule='evenodd' /%3E%3C/svg%3E");
         }
     </style>
 </head>
-<body>
+<body class="py-12 px-4">
+    <div class="container">
+        <h1>Privacy Policy for Trace</h1>
+        <p><strong>Effective Date:</strong> June 16, 2025</p>
 
-    <h1>Trace Privacy Policy</h1>
+        <div class="summary-box my-8">
+            <h2 class="text-xl !mt-0 !border-b-0">Privacy at a Glance</h2>
+            <p class="mb-4">We believe in transparency. Here’s a simple summary of our privacy promise.</p>
+            <ul class="space-y-2">
+                <li class="negative"><strong>We NEVER collect your content.</strong> The text of your clips and stashes is yours alone and remains on your device.</li>
+                <li class="neutral"><strong>We PLAN to collect ANONYMOUS data.</strong> To improve Trace, we intend to collect non-personal usage statistics (e.g., feature popularity).</li>
+                <li class="positive"><strong>You will have full control.</strong> When analytics are introduced, you will have a clear and simple option to opt-out.</li>
+                <li class="positive"><strong>We use minimal permissions.</strong> We only request permissions essential for Trace to function.</li>
+                <li class="negative"><strong>We do not sell your data.</strong> We are not in the business of selling user data.</li>
+            </ul>
+        </div>
 
-    <p><strong>Last updated:</strong> June 14, 2025</p>
+        <h2>1. Introduction</h2>
+        <p>Welcome to Trace ("we," "us," "our"). We are committed to protecting your privacy and handling your data in an open and transparent manner. This Privacy Policy explains how we handle information in connection with our Trace browser extension (the "Service").</p>
+        <p>This policy is designed to comply with major global privacy regulations, including the General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA) as amended by the CPRA, Canada's Personal Information Protection and Electronic Documents Act (PIPEDA), and India's Digital Personal Data Protection Act (DPDPA).</p>
 
-    <p>Trace is a Chrome Extension designed to work entirely client-side. It does not collect, store, transmit, or process any personal or usage data externally. We believe in building software that respects user privacy by design.</p>
+        <h2>2. Who We Are</h2>
+        <p>For the purpose of data protection laws, the data controller is:
+            <br><strong>Trace App</strong>
+            <br>Contact Email: <a href="mailto:shreyanshpandey@protonmail.com">shreyanshpandey@protonmail.com</a>
+        </p>
 
-    <h2>1. No Data Collection</h2>
-    <p>Trace does not collect or transmit any personal information.</p>
-    <ul>
-        <li>There is no backend. No servers. No tracking scripts inside the extension.</li>
-        <li>All clips, stashes, and user content are stored locally in your browser.</li>
-        <li>We do not use cookies, fingerprinting, or third-party scripts in the extension.</li>
-    </ul>
+        <h2>3. Information We Collect and Why</h2>
+        <p>We believe in data minimization. We only process information that is necessary to provide and improve the Service.</p>
+        
+        <h3>3.1. Your Content Data (What We DON'T Collect)</h3>
+        <p><strong>The content of your clips and stashes is never collected, transmitted, or stored by us.</strong> This data is processed and stored locally on your device within your browser's secure storage. We have no access to it. This is a core principle of our design.</p>
 
-    <h2>2. Permissions</h2>
-    <p>Trace requests only the permissions necessary for its single purpose: enabling fast, reflexive clipboard management and memory for knowledge workers.</p>
-    <ul>
-        <li><code>storage</code> – to save your clips and stashes locally.</li>
-        <li><code>scripting</code> – to inject the command palette or tooltip when triggered by you.</li>
-        <li><code>clipboardWrite</code> – to allow copying clips to your clipboard on demand.</li>
-        <li><code>host permissions</code> – to allow Trace to run when activated by the user (e.g., typing ;; or using the popup).</li>
-    </ul>
-    <p>None of these permissions are used to read page content or pass any data off-device.</p>
+        <h3>3.2. Personal Information</h3>
+        <p>We do not require you to create an account to use Trace. The core Service does not collect any Personal Information that directly identifies you, such as your name, email address, or physical address.</p>
+        <p>The only exception is if you voluntarily contact us for support via email, in which case we will use your email address solely to communicate with you about your query.</p>
 
-    <h2>3. Analytics Disclosure</h2>
-    <p>Trace does not use analytics inside the extension.</p>
-    <p>The Chrome Web Store listing may include Google Analytics only on the listing page (as managed by the Chrome Web Store platform itself). This is outside our extension runtime and does not reflect any tracking behavior of the extension.</p>
+        <h3>3.3. Anonymized and Aggregated Usage Data (Future Collection)</h3>
+        <p>To help us improve the Service, fix bugs, and prioritize new features, we plan to collect anonymized and aggregated usage data in a future version of Trace. This data is non-personal and cannot be used to identify you. It will include:</p>
+        <ul>
+            <li>• <strong>Feature Engagement:</strong> How often core features (e.g., "mark," "stash," "search") are used.</li>
+            <li>• <strong>Performance Metrics:</strong> Extension load times and search speed to help us identify and fix bottlenecks.</li>
+            <li>• <strong>System Information:</strong> Browser type/version and operating system to ensure compatibility and diagnose issues.</li>
+        </ul>
+        <p><strong>Crucially, you will have the ability to opt-out of this data collection.</strong> This option will be clearly presented in the extension's settings.</p>
 
-    <h2>4. Children’s Privacy</h2>
-    <p>Trace is not intended for users under the age of 13. No data is collected from any user, and Trace is compliant with COPPA by design.</p>
+        <h2>4. Legal Basis for Processing</h2>
+        <p>Under GDPR, we must have a legal basis to process data. For the future collection of Anonymized and Aggregated Usage Data, our legal basis will be:
+            <br>• <strong>Legitimate Interest:</strong> We have a legitimate interest in understanding how our Service is used so we can improve it for all users. We ensure this interest is balanced against your rights and freedoms by only collecting non-personal, anonymized data and by providing a clear opt-out.
+            <br>• <strong>Consent:</strong> By providing a clear opt-out mechanism, we are also empowering you to grant or withdraw your consent for this processing.
+        </p>
+        
+        <h2>5. Your Data Protection Rights</h2>
+        <p>You have rights concerning your information under various privacy laws. We are committed to upholding these rights for all users, regardless of location.</p>
+        <ul>
+            <li>• <strong>The Right to Be Informed:</strong> This policy informs you of our data practices.</li>
+            <li>• <strong>The Right of Access:</strong> Since we don't store your personal data, this right is limited. You can access your Content Data locally within your browser.</li>
+            <li>• <strong>The Right to Rectification:</strong> You can correct or update your Content Data locally.</li>
+            <li>• <strong>The Right to Erasure (Deletion):</strong> You can delete your Content Data at any time by clearing the extension's storage or uninstalling it.</li>
+            <li>• <strong>The Right to Withdraw Consent / Opt-Out:</strong> You will have the right to opt-out of our future anonymous data collection at any time.</li>
+            <li>• <strong>The Right to Lodge a Complaint:</strong> You have the right to lodge a complaint with your local data protection authority if you have concerns about our practices.</li>
+        </ul>
+        <p>To exercise any rights or if you have questions, please contact us at <a href="mailto:shreyanshpandey@protonmail.com">shreyanshpandey@protonmail.com</a>.</p>
+        
+        <h3>5.1. Region-Specific Rights</h3>
+        <p><strong>For users in California (CCPA/CPRA):</strong> We do not "sell" or "share" personal information as defined by the CCPA. The rights listed above cover your rights under California law.</p>
+        <p><strong>For users in the EEA, UK, and Switzerland (GDPR):</strong> The rights listed above are your primary rights under GDPR.</p>
+        <p><strong>For users in Canada (PIPEDA):</strong> This policy is intended to comply with PIPEDA's principles of accountability, consent, and openness. You have the right to access your information and challenge our compliance with the Privacy Commissioner of Canada.</p>
+        <p><strong>For users in India (DPDPA):</strong> We act as the "Data Fiduciary." You have the rights outlined above. For any grievances, please contact our Grievance Officer at <a href="shreyanshpandey@protonmail.com">shreyanshpandey@protonmail.com</a>.</p>
 
-    <h2>5. Your Rights</h2>
-    <p>Since we do not collect any personal data, there is no personal information to access, export, or delete.</p>
-    <p>However, if you have questions, you can contact us at: <a href="mailto:shreyanshpandey@protonmail.com">shreyanshpandey@protonmail.com</a></p>
 
-    <h2>6. Changes to This Policy</h2>
-    <p>We may update this policy if features change. All changes will be posted on the extension listing and within the extension’s changelog if relevant.</p>
+        <h2>6. Data Security and Retention</h2>
+        <p>We are committed to data security. All your Content Data is stored locally on your device. For any future anonymous data collection, we will use reputable third-party analytics services that employ industry-standard security measures, including encryption in transit and at rest. We will only retain this aggregated data for as long as it is necessary for the purpose of product improvement.</p>
 
-    <h2>✅ Summary</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Area</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Personal Data Collection</td>
-                <td>❌ No</td>
-            </tr>
-            <tr>
-                <td>Server/Cloud Processing</td>
-                <td>❌ None</td>
-            </tr>
-            <tr>
-                <td>Backend Services</td>
-                <td>❌ None</td>
-            </tr>
-            <tr>
-                <td>Analytics in Extension</td>
-                <td>❌ None</td>
-            </tr>
-            <tr>
-                <td>Local-Only Data Storage</td>
-                <td>✅ Yes (via <code>chrome.storage.local</code>)</td>
-            </tr>
-            <tr>
-                <td>Cookies/Fingerprinting</td>
-                <td>❌ None</td>
-            </tr>
-            <tr>
-                <td>Age Restriction Compliance</td>
-                <td>✅ COPPA Compliant</td>
-            </tr>
-            <tr>
-                <td>GDPR / CCPA Compliant</td>
-                <td>✅ Fully Compliant</td>
-            </tr>
-        </tbody>
-    </table>
+        <h2>7. Children's Privacy</h2>
+        <p>Our Service is not directed to individuals under the age of 13 (or 16 in certain jurisdictions). We do not knowingly collect any personal information from children. If we become aware that we have inadvertently collected such information, we will take steps to delete it.</p>
+        
+        <h2>8. Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the new policy on this page and, if applicable, through a notice within the extension or on the extension's store listing. We encourage you to review this policy periodically.</p>
+        
+        <h2>9. Contact Us</h2>
+        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please do not hesitate to contact us:</p>
+        <p><strong>Trace Grievance Officer / Data Protection Contact</strong>
+        <br><a href="shreyanshpandey@protonmail.com">shreyanshpandey@protonmail.com</a></p>
 
+    </div>
 </body>
 </html>
