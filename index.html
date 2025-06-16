@@ -14,11 +14,11 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            color: #E5E7EB;
+            background-color: #F9FAFB; /* Light Gray */
+            color: #111827; /* Dark Gray */
         }
         .gradient-text {
-            background: linear-gradient(90deg, #A78BFA, #F472B6, #60A5FA);
+            background: linear-gradient(90deg, #6D28D9, #EC4899, #3B82F6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -29,32 +29,32 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.15;
+            opacity: 0.1;
         }
         .content-section {
             position: relative;
             z-index: 1;
         }
         .card {
-            background-color: #111111;
-            border: 1px solid #27272A;
+            background-color: #ffffff;
+            border: 1px solid #E5E7EB;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
         .btn-primary {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #111827;
+            color: #ffffff;
             transition: background-color 0.3s ease;
         }
         .btn-primary:hover {
-            background-color: #E5E7EB;
+            background-color: #374151;
         }
         .laptop-screen {
-            background-color: #0d0d0d;
-            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-color: #F9FAFB;
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
             background-size: 25px 25px;
             padding: 1rem;
             display: flex;
@@ -76,13 +76,13 @@
             transform: scaleY(0);
         }
         .palette-item.selected { 
-            background-color: rgba(59, 130, 246, 0.5); /* Semi-transparent blue for a clearer highlight */
+            background-color: rgba(59, 130, 246, 0.1); /* Lighter blue highlight */
         }
         .blinking-cursor {
             display: inline-block;
             width: 2px;
             height: 1em;
-            background-color: #A78BFA;
+            background-color: #6D28D9;
             animation: blink 1s step-end infinite;
             vertical-align: text-bottom;
             margin-left: 2px;
@@ -96,18 +96,18 @@
 <body class="antialiased">
 
     <!-- Navigation Bar -->
-    <nav class="fixed top-0 left-0 right-0 z-20 bg-black/60 backdrop-blur-md border-b border-white/10">
+    <nav class="fixed top-0 left-0 right-0 z-20 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex justify-between items-center h-16">
-                <a href="https://theprismlabs.github.io/trace/" class="text-xl font-bold text-white tracking-tight">Trace</a>
+                <a href="https://theprismlabs.github.io/trace/" class="text-xl font-bold text-gray-900 tracking-tight">Trace</a>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Features</a>
-                    <a href="#philosophy" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Philosophy</a>
+                    <a href="#features" class="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">Features</a>
+                    <a href="#philosophy" class="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">Philosophy</a>
                 </div>
-                <a href="#" class="hidden md:inline-block bg-white text-black font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-200 transition-colors">
+                <a href="#" class="hidden md:inline-block bg-gray-900 text-white font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-700 transition-colors">
                     Get Trace for Chrome (Beta)
                 </a>
-                <a href="#" class="md:hidden bg-white text-black font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-200 transition-colors">
+                <a href="#" class="md:hidden bg-gray-900 text-white font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-700 transition-colors">
                     Get Beta
                 </a>
             </div>
@@ -118,10 +118,10 @@
     <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <canvas id="hero-canvas" class="hero-canvas"></canvas>
         <div class="content-section text-center px-4">
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4">
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-4">
                 Command your web.
             </h1>
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-300 mb-8">
+            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-8">
                 Your attention is precious. Trace is a reflexive memory engine that lets you mark and stash ideas without breaking your flow.
             </p>
             <a href="#" class="btn-primary font-semibold py-3 px-8 rounded-full text-lg inline-block">
@@ -134,15 +134,15 @@
     <main class="py-20 md:py-32">
         <!-- How it Works Section -->
         <section class="content-section max-w-5xl mx-auto px-6 mb-24 md:mb-40 text-center scroll-mt-20" id="how-it-works">
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-12">Fast like muscle memory.</h2>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-12">Fast like muscle memory.</h2>
             <div class="grid md:grid-cols-2 gap-8 text-left">
-                <div class="p-8 rounded-xl bg-gray-900/50 border border-gray-800">
-                    <h3 class="text-xl font-semibold text-white mb-2">Mark a quote.</h3>
-                    <p class="text-gray-400">Select text, press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd>. It's saved with its source, instantly.</p>
+                <div class="p-8 rounded-xl bg-white border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mark a quote.</h3>
+                    <p class="text-gray-600">Select text, press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd>. It's saved with its source, instantly.</p>
                 </div>
-                <div class="p-8 rounded-xl bg-gray-900/50 border border-gray-800">
-                    <h3 class="text-xl font-semibold text-white mb-2">Stash a thought.</h3>
-                    <p class="text-gray-400">Just start typing, press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd>. Your fleeting idea is captured.</p>
+                <div class="p-8 rounded-xl bg-white border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Stash a thought.</h3>
+                    <p class="text-gray-600">Just start typing, press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd>. Your fleeting idea is captured.</p>
                 </div>
             </div>
         </section>
@@ -151,22 +151,22 @@
         <section class="content-section max-w-6xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20">
             <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 items-center">
                 <div class="text-left md:order-2">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">Recall at the speed of thought.</h2>
-                    <p class="text-lg text-gray-400">
-                        This is your thinking buffer, instantly searchable. Trigger the command palette with <code class="bg-gray-800 text-gray-200 rounded-md px-2 py-1 font-mono text-base">;;</code>, type a keyword, navigate, and paste any saved clip or note with its source.
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-6">Recall at the speed of thought.</h2>
+                    <p class="text-lg text-gray-600">
+                        This is your thinking buffer, instantly searchable. Trigger the command palette with <code class="bg-gray-100 text-gray-800 rounded-md px-2 py-1 font-mono text-base">;;</code>, type a keyword, navigate, and paste any saved clip or note with its source.
                     </p>
                 </div>
                 <div class="md:order-1">
                     <!-- Laptop Frame -->
-                    <div class="relative mx-auto border-gray-800 bg-gray-800 border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]">
+                    <div class="relative mx-auto border-gray-300 bg-gray-300 border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]">
                         <div class="rounded-lg overflow-hidden h-[156px] md:h-[278px] laptop-screen">
                              <div id="animation-container" class="w-full h-full">
                                 <!-- JS will populate this -->
                              </div>
                         </div>
                     </div>
-                    <div class="relative mx-auto bg-gray-900 rounded-b-xl h-[17px] max-w-[351px] md:h-[21px] md:max-w-[597px]">
-                        <div class="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[4px] md:w-[96px] md:h-[8px] bg-gray-800"></div>
+                    <div class="relative mx-auto bg-gray-200 rounded-b-xl h-[17px] max-w-[351px] md:h-[21px] md:max-w-[597px]">
+                        <div class="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[4px] md:w-[96px] md:h-[8px] bg-gray-300"></div>
                     </div>
                 </div>
             </div>
@@ -175,17 +175,17 @@
         <!-- Features Section (id="features") -->
         <section class="content-section max-w-6xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20" id="features">
              <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-[#111111] border border-gray-800 p-8 rounded-2xl">
-                    <h3 class="text-2xl font-semibold text-white mb-3">Your Thinking Buffer</h3>
-                    <p class="text-gray-400">This isn’t a clipboard. It’s a scratchpad for ideas, quotes, and insights — built for creators, researchers, and writers.</p>
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">Your Thinking Buffer</h3>
+                    <p class="text-gray-600">This isn’t a clipboard. It’s a scratchpad for ideas, quotes, and insights — built for creators, researchers, and writers.</p>
                 </div>
-                <div class="bg-[#111111] border border-gray-800 p-8 rounded-2xl">
-                    <h3 class="text-2xl font-semibold text-white mb-3">You're In Control</h3>
-                    <p class="text-gray-400">No passive tracking. No clutter. Every saved snippet is intentional. Fast, local, and yours.</p>
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">You're In Control</h3>
+                    <p class="text-gray-600">No passive tracking. No clutter. Every saved snippet is intentional. Fast, local, and yours.</p>
                 </div>
-                <div class="bg-[#111111] border border-gray-800 p-8 rounded-2xl">
-                    <h3 class="text-2xl font-semibold text-white mb-3">Organize Without Organizing</h3>
-                    <p class="text-gray-400">Mark now, sort later. Bundles, tags, and powerful search make it easy to turn fragments into structure—when you're ready.</p>
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">Organize Without Organizing</h3>
+                    <p class="text-gray-600">Mark now, sort later. Bundles, tags, and powerful search make it easy to turn fragments into structure—when you're ready.</p>
                 </div>
             </div>
         </section>
@@ -193,28 +193,28 @@
         <!-- Product Philosophy Section (id="philosophy") -->
         <section class="content-section max-w-4xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20" id="philosophy">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Product Philosophy</h2>
-                <p class="mt-4 text-lg text-gray-400">Trace isn’t about features. It’s about obviousness.</p>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Product Philosophy</h2>
+                <p class="mt-4 text-lg text-gray-600">Trace isn’t about features. It’s about obviousness.</p>
             </div>
             <div class="space-y-8">
-                <div class="border-l-2 border-gray-700 pl-6">
-                    <h3 class="text-xl font-semibold text-white">Expectation is Specification</h3>
-                    <p class="text-gray-400 mt-1">We don’t build features. We fulfill reflexes. If a user tries something, Trace should already support it.</p>
+                <div class="border-l-2 border-gray-300 pl-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Expectation is Specification</h3>
+                    <p class="text-gray-600 mt-1">We don’t build features. We fulfill reflexes. If a user tries something, Trace should already support it.</p>
                 </div>
-                <div class="border-l-2 border-gray-700 pl-6">
-                    <h3 class="text-xl font-semibold text-white">Interfaces Should Be Invisible</h3>
-                    <p class="text-gray-400 mt-1">UI is not the product—reaction is. Trace feels like muscle memory, not software.</p>
+                <div class="border-l-2 border-gray-300 pl-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Interfaces Should Be Invisible</h3>
+                    <p class="text-gray-600 mt-1">UI is not the product—reaction is. Trace feels like muscle memory, not software.</p>
                 </div>
-                <div class="border-l-2 border-gray-700 pl-6">
-                    <h3 class="text-xl font-semibold text-white">Behavior is the Documentation</h3>
-                    <p class="text-gray-400 mt-1">If it needs to be explained, it’s wrong. It does what you expect it to do.</p>
+                <div class="border-l-2 border-gray-300 pl-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Behavior is the Documentation</h3>
+                    <p class="text-gray-600 mt-1">If it needs to be explained, it’s wrong. It does what you expect it to do.</p>
                 </div>
             </div>
         </section>
 
         <!-- Final Call to Action -->
         <section class="content-section text-center px-4 py-20">
-             <h2 class="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight">
+             <h2 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight">
                 Don’t just copy.<br>
                 <span class="gradient-text">Mark it. Stash it.</span>
             </h2>
@@ -228,11 +228,11 @@
 
     <!-- Footer -->
     <footer class="content-section max-w-6xl mx-auto px-6 py-12 text-center text-gray-500">
-        <p>&copy; 2025 Trace. All rights reserved.</p>
+        <p>&copy; 2024 Trace. All rights reserved.</p>
         <div class="mt-4 flex justify-center space-x-6">
-            <a href="https://x.com/TraceRecall" class="hover:text-white transition-colors">Twitter</a>
-            <a href="https://theprismlabs.github.io/trace/privacy-policy.html" class="hover:text-white transition-colors">Privacy</a>
-            <a href="mailto:shreyanshpandey@protonmail.com" class="hover:text-white transition-colors">Contact</a>
+            <a href="https://x.com/TraceRecall" class="hover:text-gray-900 transition-colors">Twitter</a>
+            <a href="https://theprismlabs.github.io/trace/privacy-policy.html" class="hover:text-gray-900 transition-colors">Privacy</a>
+            <a href="mailto:shreyanshpandey@protonmail.com" class="hover:text-gray-900 transition-colors">Contact</a>
         </div>
     </footer>
 
@@ -259,7 +259,7 @@
                 }
                 particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
                 const particleMaterial = new THREE.PointsMaterial({
-                    color: 0x555555, size: 0.7, blending: THREE.AdditiveBlending,
+                    color: 0xAAAAAA, size: 0.7, blending: THREE.AdditiveBlending,
                     transparent: true, sizeAttenuation: true,
                 });
                 particleSystem = new THREE.Points(particles, particleMaterial);
@@ -288,11 +288,11 @@
             const typingTarget = 'Product Philosop';
 
             const allItems = [
-                { match: "Interesting Reads", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-red-400"><!-- icon --></div><div><p class="text-white">Interesting Reads</p><p class="text-gray-400 text-xs">1 item • Stash</p></div></div>` },
-                { match: "Quotes", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-orange-400"><!-- icon --></div><div><p class="text-white">Quotes</p><p class="text-gray-400 text-xs">4 items • Stash</p></div></div>` },
-                { match: "Product Philosophy", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-amber-400"><!-- icon --></div><div><p class="text-white">Product Philosophy</p><p class="text-gray-400 text-xs">3 items • Stash</p></div></div>` },
-                { match: "obviousness", content: 'Trace isn’t about features. It’s about obviousness. It behaves the way your mind expects. — <a href="/"> <u class="text-gray-700 dark:text-gray-400 hover:text-blue-600">Trace: The Reflexive Memory Engine</u> </a>', stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-500 mt-0.5"><!-- icon --></div><div><p class="text-gray-200">Trace isn't about features. It's about <span class="font-bold text-white">obviousness</span>...</p><div class="flex items-center text-xs text-amber-400/80 mt-1"><span>Product Philosophy</span></div></div></div>`},
-                { match: "user expects", content: "If a user expects something—Esc to dismiss, arrow keys to navigate, Enter to commit—it should already work.", stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-500 mt-0.5"><!-- icon --></div><div><p class="text-gray-200">If a <span class="font-bold text-white">user expects</span> something—Esc to dismiss...</p><div class="flex items-center text-xs text-amber-400/80 mt-1"><span>Product Philosophy</span></div></div></div>` },
+                { match: "Interesting Reads", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-red-500"><!-- icon --></div><div><p class="text-gray-800">Interesting Reads</p><p class="text-gray-500 text-xs">1 item • Stash</p></div></div>` },
+                { match: "Quotes", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-orange-500"><!-- icon --></div><div><p class="text-gray-800">Quotes</p><p class="text-gray-500 text-xs">4 items • Stash</p></div></div>` },
+                { match: "Product Philosophy", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-amber-500"><!-- icon --></div><div><p class="text-gray-800">Product Philosophy</p><p class="text-gray-500 text-xs">3 items • Stash</p></div></div>` },
+                { match: "obviousness", content: 'Trace isn’t about features. It’s about obviousness. It behaves the way your mind expects. — <a href="/" class="text-gray-400 hover:text-blue-600 underline">Trace: The Reflexive Memory Engine</a>', stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-400 mt-0.5"><!-- icon --></div><div><p class="text-gray-600">Trace isn't about features. It's about <span class="font-bold text-gray-800">obviousness</span>...</p><div class="flex items-center text-xs text-amber-600 mt-1"><span>Product Philosophy</span></div></div></div>`},
+                { match: "user expects", content: "If a user expects something—Esc to dismiss, arrow keys to navigate, Enter to commit—it should already work.", stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-400 mt-0.5"><!-- icon --></div><div><p class="text-gray-600">If a <span class="font-bold text-gray-800">user expects</span> something—Esc to dismiss...</p><div class="flex items-center text-xs text-amber-600 mt-1"><span>Product Philosophy</span></div></div></div>` },
             ];
 
             function renderItems(itemsToRender, selector) {
@@ -308,10 +308,10 @@
                 // 1. Reset and Initial State
                 container.innerHTML = `
                     <div id="palette-wrapper" class="w-full max-w-sm transition-opacity duration-300">
-                        <div id="query-container" class="w-full font-mono text-lg text-gray-300 mb-2">
+                        <div id="query-container" class="w-full font-mono text-lg text-gray-800 mb-2">
                            <span class="text-gray-500">;;</span><span id="typing-span"></span><span class="blinking-cursor"></span>
                         </div>
-                        <div id="palette-container" class="w-full bg-[#1E1E1E] rounded-lg shadow-2xl border border-gray-700/50 font-sans text-sm overflow-hidden divide-y divide-gray-700/50">
+                        <div id="palette-container" class="w-full bg-white rounded-lg shadow-2xl border border-gray-200 font-sans text-sm overflow-hidden divide-y divide-gray-200">
                         </div>
                     </div>
                 `;
@@ -371,7 +371,7 @@
                 await new Promise(r => setTimeout(r, 300));
                 
                 if (queryContainer) {
-                    queryContainer.className = 'w-full text-lg text-gray-300 font-sans';
+                    queryContainer.className = 'w-full text-lg text-gray-800 font-sans';
                     queryContainer.innerHTML = `<p>${allItems[3].content}<span class="blinking-cursor"></span></p>`;
                 }
                  if (paletteContainer) paletteContainer.remove();
