@@ -15,7 +15,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
-            color: #E5E7EB; /* A softer white, easier on the eyes */
+            color: #E5E7EB;
         }
         .gradient-text {
             background: linear-gradient(90deg, #A78BFA, #F472B6, #60A5FA);
@@ -52,9 +52,44 @@
         .btn-primary:hover {
             background-color: #E5E7EB;
         }
-        .philosophy-card {
-            background-color: transparent;
-            border-left: 2px solid #4B5563;
+        .laptop-screen {
+            background-color: #0d0d0d;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 25px 25px;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Animation Styles */
+        .palette-item { 
+            transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.2s ease;
+            max-height: 100px;
+            opacity: 1;
+            transform: scaleY(1);
+            transform-origin: top;
+            overflow: hidden;
+        }
+        .palette-item.hidden {
+            opacity: 0;
+            max-height: 0;
+            transform: scaleY(0);
+        }
+        .palette-item.selected { 
+            background-color: rgba(59, 130, 246, 0.5); /* Semi-transparent blue for a clearer highlight */
+        }
+        .blinking-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #A78BFA;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            from, to { opacity: 1 }
+            50% { opacity: 0 }
         }
     </style>
 </head>
@@ -64,19 +99,15 @@
     <nav class="fixed top-0 left-0 right-0 z-20 bg-black/60 backdrop-blur-md border-b border-white/10">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <a href="#" class="text-xl font-bold text-white tracking-tight">Trace</a>
-                <!-- Primary Nav -->
+                <a href="https://theprismlabs.github.io/trace/" class="text-xl font-bold text-white tracking-tight">Trace</a>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#features" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Features</a>
                     <a href="#philosophy" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Philosophy</a>
                 </div>
-                <!-- CTA -->
                 <a href="#" class="hidden md:inline-block bg-white text-black font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-200 transition-colors">
                     Get Trace for Chrome (Beta)
                 </a>
-                <!-- Mobile CTA -->
-                 <a href="#" class="md:hidden bg-white text-black font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-200 transition-colors">
+                <a href="#" class="md:hidden bg-white text-black font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-200 transition-colors">
                     Get Beta
                 </a>
             </div>
@@ -116,41 +147,65 @@
             </div>
         </section>
 
+        <!-- Command Palette Section -->
+        <section class="content-section max-w-6xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20">
+            <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 items-center">
+                <div class="text-left md:order-2">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">Recall at the speed of thought.</h2>
+                    <p class="text-lg text-gray-400">
+                        This is your thinking buffer, instantly searchable. Trigger the command palette with <code class="bg-gray-800 text-gray-200 rounded-md px-2 py-1 font-mono text-base">;;</code>, type a keyword, navigate, and paste any saved clip or note with its source.
+                    </p>
+                </div>
+                <div class="md:order-1">
+                    <!-- Laptop Frame -->
+                    <div class="relative mx-auto border-gray-800 bg-gray-800 border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]">
+                        <div class="rounded-lg overflow-hidden h-[156px] md:h-[278px] laptop-screen">
+                             <div id="animation-container" class="w-full h-full">
+                                <!-- JS will populate this -->
+                             </div>
+                        </div>
+                    </div>
+                    <div class="relative mx-auto bg-gray-900 rounded-b-xl h-[17px] max-w-[351px] md:h-[21px] md:max-w-[597px]">
+                        <div class="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[4px] md:w-[96px] md:h-[8px] bg-gray-800"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- Features Section -->
+        <!-- Features Section (id="features") -->
         <section class="content-section max-w-6xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20" id="features">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="card p-8 rounded-2xl">
+             <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-[#111111] border border-gray-800 p-8 rounded-2xl">
                     <h3 class="text-2xl font-semibold text-white mb-3">Your Thinking Buffer</h3>
                     <p class="text-gray-400">This isn’t a clipboard. It’s a scratchpad for ideas, quotes, and insights — built for creators, researchers, and writers.</p>
                 </div>
-                <div class="card p-8 rounded-2xl">
+                <div class="bg-[#111111] border border-gray-800 p-8 rounded-2xl">
                     <h3 class="text-2xl font-semibold text-white mb-3">You're In Control</h3>
                     <p class="text-gray-400">No passive tracking. No clutter. Every saved snippet is intentional. Fast, local, and yours.</p>
                 </div>
-                <div class="card p-8 rounded-2xl">
+                <div class="bg-[#111111] border border-gray-800 p-8 rounded-2xl">
                     <h3 class="text-2xl font-semibold text-white mb-3">Organize Without Organizing</h3>
                     <p class="text-gray-400">Mark now, sort later. Bundles, tags, and powerful search make it easy to turn fragments into structure—when you're ready.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Product Philosophy Section -->
+        <!-- Product Philosophy Section (id="philosophy") -->
         <section class="content-section max-w-4xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20" id="philosophy">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Product Philosophy</h2>
                 <p class="mt-4 text-lg text-gray-400">Trace isn’t about features. It’s about obviousness.</p>
             </div>
             <div class="space-y-8">
-                <div class="philosophy-card pl-6">
+                <div class="border-l-2 border-gray-700 pl-6">
                     <h3 class="text-xl font-semibold text-white">Expectation is Specification</h3>
                     <p class="text-gray-400 mt-1">We don’t build features. We fulfill reflexes. If a user tries something, Trace should already support it.</p>
                 </div>
-                <div class="philosophy-card pl-6">
+                <div class="border-l-2 border-gray-700 pl-6">
                     <h3 class="text-xl font-semibold text-white">Interfaces Should Be Invisible</h3>
                     <p class="text-gray-400 mt-1">UI is not the product—reaction is. Trace feels like muscle memory, not software.</p>
                 </div>
-                <div class="philosophy-card pl-6">
+                <div class="border-l-2 border-gray-700 pl-6">
                     <h3 class="text-xl font-semibold text-white">Behavior is the Documentation</h3>
                     <p class="text-gray-400 mt-1">If it needs to be explained, it’s wrong. It does what you expect it to do.</p>
                 </div>
@@ -169,23 +224,21 @@
                 </a>
             </div>
         </section>
-
     </main>
 
     <!-- Footer -->
     <footer class="content-section max-w-6xl mx-auto px-6 py-12 text-center text-gray-500">
         <p>&copy; 2024 Trace. All rights reserved.</p>
         <div class="mt-4 flex justify-center space-x-6">
-            <a href="#" class="hover:text-white transition-colors">Twitter</a>
-            <a href="#" class="hover:text-white transition-colors">Privacy</a>
-            <a href="#" class="hover:text-white transition-colors">Contact</a>
+            <a href="https://x.com/TraceRecall" class="hover:text-white transition-colors">Twitter</a>
+            <a href="https://theprismlabs.github.io/trace/privacy-policy.html" class="hover:text-white transition-colors">Privacy</a>
+            <a href="mailto:shreyanshpandey@protonmail.com" class="hover:text-white transition-colors">Contact</a>
         </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // A subtle, abstract background animation for the hero section
-        // representing thoughts or data points flowing.
+        // Hero background animation
         window.addEventListener('load', function() {
             let scene, camera, renderer, particles, particleSystem;
             const heroCanvas = document.getElementById('hero-canvas');
@@ -195,50 +248,142 @@
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
                 camera.position.z = 300;
-
                 renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight);
-
                 particles = new THREE.BufferGeometry();
                 const particleCount = 5000;
                 const positions = new Float32Array(particleCount * 3);
-
                 for (let i = 0; i < particleCount * 3; i++) {
                     positions[i] = (Math.random() - 0.5) * 1000;
                 }
                 particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
                 const particleMaterial = new THREE.PointsMaterial({
-                    color: 0x555555,
-                    size: 0.7,
-                    blending: THREE.AdditiveBlending,
-                    transparent: true,
-                    sizeAttenuation: true,
+                    color: 0x555555, size: 0.7, blending: THREE.AdditiveBlending,
+                    transparent: true, sizeAttenuation: true,
                 });
-
                 particleSystem = new THREE.Points(particles, particleMaterial);
                 scene.add(particleSystem);
-
                 animate();
             }
-
             function animate() {
                 requestAnimationFrame(animate);
                 particleSystem.rotation.y += 0.0002;
                 particleSystem.rotation.x += 0.0001;
                 renderer.render(scene, camera);
             }
-
             function onWindowResize() {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
             }
-
             window.addEventListener('resize', onWindowResize, false);
-
             init();
         });
+
+
+        // Command Palette Animation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('animation-container');
+            const typingTarget = 'Product Philosop';
+
+            const allItems = [
+                { match: "Interesting Reads", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-red-400"><!-- icon --></div><div><p class="text-white">Interesting Reads</p><p class="text-gray-400 text-xs">1 item • Stash</p></div></div>` },
+                { match: "Quotes", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-orange-400"><!-- icon --></div><div><p class="text-white">Quotes</p><p class="text-gray-400 text-xs">4 items • Stash</p></div></div>` },
+                { match: "Product Philosophy", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-amber-400"><!-- icon --></div><div><p class="text-white">Product Philosophy</p><p class="text-gray-400 text-xs">3 items • Stash</p></div></div>` },
+                { match: "obviousness", content: 'Trace isn’t about features. It’s about obviousness. It behaves the way your mind expects. — <a href="/"> <u class="text-gray-700 dark:text-gray-400 hover:text-blue-600">Trace: The Reflexive Memory Engine</u> </a>', stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-500 mt-0.5"><!-- icon --></div><div><p class="text-gray-200">Trace isn't about features. It's about <span class="font-bold text-white">obviousness</span>...</p><div class="flex items-center text-xs text-amber-400/80 mt-1"><span>Product Philosophy</span></div></div></div>`},
+                { match: "user expects", content: "If a user expects something—Esc to dismiss, arrow keys to navigate, Enter to commit—it should already work.", stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-500 mt-0.5"><!-- icon --></div><div><p class="text-gray-200">If a <span class="font-bold text-white">user expects</span> something—Esc to dismiss...</p><div class="flex items-center text-xs text-amber-400/80 mt-1"><span>Product Philosophy</span></div></div></div>` },
+            ];
+
+            function renderItems(itemsToRender, selector) {
+                const paletteContainer = container.querySelector(selector);
+                if (paletteContainer) {
+                    paletteContainer.innerHTML = itemsToRender.map((item, index) => 
+                        `<div id="item-${index}" class="palette-item" data-match="${item.match}" data-stash="${item.stash || ''}">${item.html}</div>`
+                    ).join('');
+                }
+            }
+
+            async function runAnimation() {
+                // 1. Reset and Initial State
+                container.innerHTML = `
+                    <div id="palette-wrapper" class="w-full max-w-sm transition-opacity duration-300">
+                        <div id="query-container" class="w-full font-mono text-lg text-gray-300 mb-2">
+                           <span class="text-gray-500">;;</span><span id="typing-span"></span><span class="blinking-cursor"></span>
+                        </div>
+                        <div id="palette-container" class="w-full bg-[#1E1E1E] rounded-lg shadow-2xl border border-gray-700/50 font-sans text-sm overflow-hidden divide-y divide-gray-700/50">
+                        </div>
+                    </div>
+                `;
+                renderItems(allItems, '#palette-container');
+                
+                const typingSpan = document.getElementById('typing-span');
+                const paletteItems = Array.from(container.querySelectorAll('.palette-item'));
+
+                // Pause to showcase the initial palette
+                await new Promise(r => setTimeout(r, 1500));
+
+                // 2. Animate Typing and Filtering
+                for (let i = 0; i <= typingTarget.length; i++) {
+                    await new Promise(r => setTimeout(r, 90));
+                    const currentText = typingTarget.substring(0, i);
+                    typingSpan.textContent = currentText;
+
+                    paletteItems.forEach(item => {
+                        const matchText = (item.dataset.match || "").toLowerCase();
+                        const stashText = (item.dataset.stash || "").toLowerCase();
+                        const isMatch = matchText.includes(currentText.toLowerCase()) || stashText.includes(currentText.toLowerCase());
+                        if (!isMatch) {
+                            item.classList.add('hidden');
+                        } else {
+                            item.classList.remove('hidden');
+                        }
+                    });
+                }
+                
+                await new Promise(r => setTimeout(r, 700));
+
+                // 3. Navigate
+                const visibleItems = paletteItems.filter(item => !item.classList.contains('hidden'));
+                const stashHeader = visibleItems.find(item => item.id === 'item-2');
+                const clipToSelect = visibleItems.find(item => item.id === 'item-3'); // The 'obviousness' clip
+                
+                if (stashHeader) {
+                    await new Promise(r => setTimeout(r, 800));
+                    stashHeader.classList.add('selected');
+                }
+                if (clipToSelect) {
+                    await new Promise(r => setTimeout(r, 800));
+                    if (stashHeader) stashHeader.classList.remove('selected');
+                    clipToSelect.classList.add('selected');
+                }
+
+                // 4. Paste
+                await new Promise(r => setTimeout(r, 1200));
+                const queryContainer = document.getElementById('query-container');
+                const paletteContainer = document.getElementById('palette-container');
+                
+                if(paletteContainer) {
+                    paletteContainer.style.transition = 'opacity 0.3s ease';
+                    paletteContainer.style.opacity = 0;
+                }
+               
+                await new Promise(r => setTimeout(r, 300));
+                
+                if (queryContainer) {
+                    queryContainer.className = 'w-full text-lg text-gray-300 font-sans';
+                    queryContainer.innerHTML = `<p>${allItems[3].content}<span class="blinking-cursor"></span></p>`;
+                }
+                 if (paletteContainer) paletteContainer.remove();
+                
+                // 5. Loop
+                await new Promise(r => setTimeout(r, 5000));
+                runAnimation();
+            }
+
+            runAnimation();
+        });
+
     </script>
 </body>
 </html>
