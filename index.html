@@ -3,386 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trace: The Reflexive Memory Engine</title>
+    <title>Trace - The Reflexive Memory Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* Light Gray */
-            color: #111827; /* Dark Gray */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #fbfbfd;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .gradient-text {
-            background: linear-gradient(90deg, #6D28D9, #EC4899, #3B82F6);
+
+        .hero-gradient-text {
+            background: linear-gradient(120deg, #333, #000);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .hero-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.1;
+
+        .section-title {
+            font-size: 2.5rem; /* 40px */
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
         }
-        .content-section {
-            position: relative;
-            z-index: 1;
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 3.5rem; /* 56px */
+            }
         }
-        .card {
+        
+        .feature-card {
             background-color: #ffffff;
-            border: 1px solid #E5E7EB;
+            border-radius: 1.5rem; /* 24px */
+            padding: 2.5rem; /* 40px */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
         }
-        .btn-primary {
-            background-color: #111827;
-            color: #ffffff;
+
+        .cta-button {
+            display: inline-block;
+            background-color: #007aff;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
-        .btn-primary:hover {
-            background-color: #374151;
+
+        .cta-button:hover {
+            background-color: #0056b3;
         }
-        .laptop-screen {
-            background-color: #F9FAFB;
-            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-            background-size: 25px 25px;
-            padding: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        
+        .secondary-cta {
+             background-color: #e8e8ed;
+             color: #1d1d1f;
         }
-        /* Animation Styles */
-        .palette-item { 
-            transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.2s ease;
-            max-height: 100px;
-            opacity: 1;
-            transform: scaleY(1);
-            transform-origin: top;
+        
+        .secondary-cta:hover {
+             background-color: #dcdce1;
+        }
+        
+        /* MacBook Mockup Styles */
+        .macbook-mockup {
+            width: 80%;
+            max-width: 960px;
+            aspect-ratio: 16 / 10;
+            background: #e8e8ed;
+            border-radius: 2rem;
+            border: 1px solid #dcdce1;
+            padding: 1.5%;
+            box-shadow: 0 2.8px 2.2px rgba(0,0,0,.02), 0 6.7px 5.3px rgba(0,0,0,.028), 0 12.5px 10px rgba(0,0,0,.035), 0 22.3px 17.9px rgba(0,0,0,.042), 0 41.8px 33.4px rgba(0,0,0,.05), 0 100px 80px rgba(0,0,0,.07);
+            margin: 4rem auto;
+            position: relative;
+        }
+
+        .macbook-screen {
+            background: white;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
             overflow: hidden;
+            position: relative;
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 14px;
+            padding: 2rem;
+            line-height: 1.6;
+            color: #333;
         }
-        .palette-item.hidden {
+        
+        .macbook-base {
+            width: 120%;
+            height: 25px;
+            background: #dcdce1;
+            position: absolute;
+            left: -10%;
+            bottom: -25px;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            border: 1px solid #c9c9c9;
+            border-top: none;
+        }
+
+        .macbook-notch {
+            width: 25%;
+            height: 8px;
+            background: #dcdce1;
+            margin: -2px auto 0;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+        
+         .macbook-base-indent {
+            width: 15%;
+            height: 6px;
+            background: #c9c9c9;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            margin: 0 auto;
+        }
+
+
+        /* Spotlight Search Animation */
+        #spotlight-search {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: 600px;
+            max-width: 90%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             opacity: 0;
-            max-height: 0;
-            transform: scaleY(0);
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+            z-index: 10;
         }
-        .palette-item.selected { 
-            background-color: rgba(59, 130, 246, 0.1); /* Lighter blue highlight */
+        
+        #spotlight-search.visible {
+             opacity: 1;
+             visibility: visible;
+             transform: translate(-50%, -50%) scale(1);
         }
-        .blinking-cursor {
+
+        #search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            border: none;
+            background: transparent;
+            outline: none;
+            border-bottom: 1px solid #e5e5e5;
+            color: #1d1d1f;
+        }
+
+        .search-results-list {
+            list-style: none;
+            padding: 0.5rem;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .search-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .search-item.selected {
+             background-color: #007aff;
+             color: white;
+        }
+        
+        .search-item.selected .item-subtitle {
+             color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .item-icon {
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+        .item-text { flex-grow: 1; }
+        .item-title { 
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .item-subtitle { font-size: 0.8rem; color: #6e6e73; }
+        
+        #text-cursor {
             display: inline-block;
-            width: 2px;
-            height: 1em;
-            background-color: #6D28D9;
+            width: 1px;
+            height: 1.2em;
+            background-color: black;
             animation: blink 1s step-end infinite;
-            vertical-align: text-bottom;
-            margin-left: 2px;
+            position: relative;
+            bottom: -0.2em;
         }
+        
         @keyframes blink {
-            from, to { opacity: 1 }
-            50% { opacity: 0 }
+            from, to { background-color: transparent }
+            50% { background-color: black; }
+        }
+
+        .manifesto-section {
+             background-color: #fff;
+             border-top: 1px solid #e8e8ed;
+             border-bottom: 1px solid #e8e8ed;
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Navigation Bar -->
-    <nav class="fixed top-0 left-0 right-0 z-20 bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex justify-between items-center h-16">
-                <a href="https://theprismlabs.github.io/trace/" class="text-xl font-bold text-gray-900 tracking-tight">;;Trace</a>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">Features</a>
-                    <a href="#philosophy" class="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">Philosophy</a>
-                </div>
-                <a href="#" class="hidden md:inline-block bg-gray-900 text-white font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-700 transition-colors">
-                    Get Trace for Chrome (Beta)
-                </a>
-                <a href="#" class="md:hidden bg-gray-900 text-white font-semibold py-2 px-4 rounded-full text-sm hover:bg-gray-700 transition-colors">
-                    Get Beta
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <canvas id="hero-canvas" class="hero-canvas"></canvas>
-        <div class="content-section text-center px-4">
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-4">
-                Command your web.
-            </h1>
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-8">
-                Your attention is precious. Trace is a reflexive memory engine that lets you mark and stash ideas without breaking your flow.
-            </p>
-            <a href="#" class="btn-primary font-semibold py-3 px-8 rounded-full text-lg inline-block">
-                Get Trace for Chrome (Beta)
-            </a>
-        </div>
+    <!-- Header -->
+    <header class="py-4 px-6 md:px-12 flex justify-between items-center fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-gray-200/80">
+        <h1 class="text-2xl font-bold hero-gradient-text">Trace</h1>
+        <a href="#" class="cta-button">Download for Chrome</a>
     </header>
 
-    <main class="py-20 md:py-32">
-        <!-- How it Works Section -->
-        <section class="content-section max-w-5xl mx-auto px-6 mb-24 md:mb-40 text-center scroll-mt-20" id="how-it-works">
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-12">Fast like muscle memory.</h2>
-            <div class="grid md:grid-cols-2 gap-8 text-left">
-                <div class="p-8 rounded-xl bg-white border border-gray-200">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mark a quote.</h3>
-                    <p class="text-gray-600">Select text, press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd>. It's saved with its source, instantly.</p>
-                </div>
-                <div class="p-8 rounded-xl bg-white border border-gray-200">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Stash a thought.</h3>
-                    <p class="text-gray-600">Just start typing, press <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd>. Your fleeting idea is captured.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Command Palette Section -->
-        <section class="content-section max-w-6xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20">
-            <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 items-center">
-                <div class="text-left md:order-2">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-6">Recall at the speed of thought.</h2>
-                    <p class="text-lg text-gray-600">
-                        This is your thinking buffer, instantly searchable. Trigger the command palette with <code class="bg-gray-100 text-gray-800 rounded-md px-2 py-1 font-mono text-base">;;</code>, type a keyword, navigate, and paste any saved clip or note with its source.
-                    </p>
-                </div>
-                <div class="md:order-1">
-                    <!-- Laptop Frame -->
-                    <div class="relative mx-auto border-gray-300 bg-gray-300 border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]">
-                        <div class="rounded-lg overflow-hidden h-[156px] md:h-[278px] laptop-screen">
-                             <div id="animation-container" class="w-full h-full">
-                                <!-- JS will populate this -->
-                             </div>
-                        </div>
-                    </div>
-                    <div class="relative mx-auto bg-gray-200 rounded-b-xl h-[17px] max-w-[351px] md:h-[21px] md:max-w-[597px]">
-                        <div class="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[4px] md:w-[96px] md:h-[8px] bg-gray-300"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section (id="features") -->
-        <section class="content-section max-w-6xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20" id="features">
-             <div class="grid md:grid-cols-3 gap-8">
-                <div class="card p-8 rounded-2xl">
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">Your Thinking Buffer</h3>
-                    <p class="text-gray-600">This isn’t a clipboard. It’s a scratchpad for ideas, quotes, and insights — built for creators, researchers, and writers.</p>
-                </div>
-                <div class="card p-8 rounded-2xl">
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">You're In Control</h3>
-                    <p class="text-gray-600">No passive tracking. No clutter. Every saved snippet is intentional. Fast, local, and yours.</p>
-                </div>
-                <div class="card p-8 rounded-2xl">
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">Organize Without Organizing</h3>
-                    <p class="text-gray-600">Mark now, sort later. Bundles, tags, and powerful search make it easy to turn fragments into structure—when you're ready.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Product Philosophy Section (id="philosophy") -->
-        <section class="content-section max-w-4xl mx-auto px-6 mb-24 md:mb-40 scroll-mt-20" id="philosophy">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Product Philosophy</h2>
-                <p class="mt-4 text-lg text-gray-600">Trace isn’t about features. It’s about obviousness.</p>
-            </div>
-            <div class="space-y-8">
-                <div class="border-l-2 border-gray-300 pl-6">
-                    <h3 class="text-xl font-semibold text-gray-900">Expectation is Specification</h3>
-                    <p class="text-gray-600 mt-1">We don’t build features. We fulfill reflexes. If a user tries something, Trace should already support it.</p>
-                </div>
-                <div class="border-l-2 border-gray-300 pl-6">
-                    <h3 class="text-xl font-semibold text-gray-900">Interfaces Should Be Invisible</h3>
-                    <p class="text-gray-600 mt-1">UI is not the product—reaction is. Trace feels like muscle memory, not software.</p>
-                </div>
-                <div class="border-l-2 border-gray-300 pl-6">
-                    <h3 class="text-xl font-semibold text-gray-900">Behavior is the Documentation</h3>
-                    <p class="text-gray-600 mt-1">If it needs to be explained, it’s wrong. It does what you expect it to do.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Final Call to Action -->
-        <section class="content-section text-center px-4 py-20">
-             <h2 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight">
-                Don’t just copy.<br>
-                <span class="gradient-text">Mark it. Stash it.</span>
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section class="text-center py-20 md:py-32 px-6">
+            <h2 class="text-4xl md:text-6xl font-bold leading-tight max-w-4xl mx-auto mb-4 tracking-tighter">
+                Your attention is precious.
+                <span class="hero-gradient-text">Don’t just copy. Mark it.</span>
             </h2>
-            <div class="mt-12">
-                 <a href="#" class="btn-primary font-semibold py-3 px-8 rounded-full text-lg inline-block">
-                    Command Your Web
-                </a>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+                This isn’t a clipboard—it’s your thinking buffer. A reflexive memory engine built for creators, researchers, and deep thinkers.
+            </p>
+            <div class="flex justify-center items-center gap-4">
+                 <a href="#" class="cta-button">Download for Chrome</a>
+                 <a href="#manifesto" class="cta-button secondary-cta">Read Philosophy</a>
             </div>
         </section>
+
+        <!-- MacBook Mockup Animation -->
+        <section>
+            <div class="macbook-mockup">
+                <div class="macbook-screen">
+                    <!-- The content inside the screen -->
+                    <p>To: team@example.com</p>
+                    <p>Subject: Project Update</p>
+                    <br>
+                    <p>Hi Team,</p>
+                    <p>Just wanted to share a quick update on the project timeline.</p>
+                    <p><span id="pasted-content"></span><span id="text-cursor"></span></p>
+
+                    <!-- Spotlight Search UI -->
+                    <div id="spotlight-search">
+                        <input type="text" id="search-input" placeholder="Search your clips and stashes..." readonly>
+                        <ul class="search-results-list">
+                           <!-- JS will populate this -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="macbook-notch"></div>
+                <div class="macbook-base">
+                    <div class="macbook-base-indent"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="py-20 md:py-32 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="section-title text-center mb-16">Fast like muscle memory.</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="feature-card">
+                        <h3 class="text-2xl font-semibold mb-4">You’re in control.</h3>
+                        <p class="text-gray-600">No passive tracking. No clutter. Every saved snippet is intentional. Fast, local, and securely yours. Trace respects your privacy and your focus.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3 class="text-2xl font-semibold mb-4">Organize without organizing.</h3>
+                        <p class="text-gray-600">Mark now. Sort later. Bundles, tags, and powerful search make it easy to turn fragments into structure — whenever you're ready to connect the dots.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3 class="text-2xl font-semibold mb-4">Reflexive Speed.</h3>
+                        <p class="text-gray-600">Hit a shortcut. Mark a quote. Stash a thought. Search and paste. It's all designed to happen at the speed of thought, keeping you in the flow state.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Manifesto Section -->
+        <section id="manifesto" class="py-20 md:py-32 manifesto-section">
+            <div class="max-w-3xl mx-auto px-6 text-center">
+                 <h2 class="section-title mb-6">🧠 Trace: Product Philosophy</h2>
+                 <p class="text-xl text-gray-600 mb-12">Trace isn’t about features. It’s about obviousness. It behaves the way your mind expects—even before you realize what you want. No more, no less.</p>
+            </div>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-x-12 gap-y-10 px-6">
+                <div>
+                    <h4 class="text-xl font-bold mb-3">1. Expectation is Specification</h4>
+                    <p class="text-gray-600">We don’t build features. We fulfill reflexes. If a user tries something, Trace should already support it. Esc to dismiss, Enter to commit—it just works.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-3">2. Interfaces Should Be Invisible</h4>
+                    <p class="text-gray-600">UI is not the product—reaction is. Trace feels like an extension of your muscle memory, not a piece of software you have to learn or operate.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-3">3. Zero Cognitive Overhead</h4>
+                    <p class="text-gray-600">No thinking. No guessing. No managing. You act—Trace responds. The energy you save on context-switching is energy you can spend on deep work.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-3">4. Behavior is the Documentation</h4>
+                    <p class="text-gray-600">If a behavior needs to be explained in a manual, it’s wrong. The design should be so intuitive that the user recognizes it, rather than learning it.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="text-center py-20 md:py-32 px-6">
+            <h2 class="section-title max-w-3xl mx-auto mb-4">Command your web.</h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">Stop breaking your flow. Start building your second brain.</p>
+            <a href="#" class="cta-button text-lg">Download Trace for Chrome</a>
+        </section>
+
     </main>
 
     <!-- Footer -->
-    <footer class="content-section max-w-6xl mx-auto px-6 py-12 text-center text-gray-500">
-        <p>&copy; 2025 Trace. All rights reserved.</p>
-        <div class="mt-4 flex justify-center space-x-6">
-            <a href="https://x.com/TraceRecall" class="hover:text-gray-900 transition-colors">Twitter</a>
-            <a href="https://theprismlabs.github.io/trace/privacy-policy" class="hover:text-gray-900 transition-colors">Privacy</a>
-            <a href="mailto:shreyanshpandey@protonmail.com" class="hover:text-gray-900 transition-colors">Contact</a>
+    <footer class="py-8 px-6 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+            <p class="text-gray-500 text-sm">&copy; 2024 Trace. All Rights Reserved.</p>
+            <div class="flex items-center gap-6">
+                <a href="/privacy-policy" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">Privacy Policy</a>
+                <a href="mailto:shreyanshpandey@protonmail.com" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">Contact</a>
+            </div>
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Hero background animation
-        window.addEventListener('load', function() {
-            let scene, camera, renderer, particles, particleSystem;
-            const heroCanvas = document.getElementById('hero-canvas');
-            if (!heroCanvas) return;
-
-            function init() {
-                scene = new THREE.Scene();
-                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-                camera.position.z = 300;
-                renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true });
-                renderer.setPixelRatio(window.devicePixelRatio);
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                particles = new THREE.BufferGeometry();
-                const particleCount = 5000;
-                const positions = new Float32Array(particleCount * 3);
-                for (let i = 0; i < particleCount * 3; i++) {
-                    positions[i] = (Math.random() - 0.5) * 1000;
-                }
-                particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                const particleMaterial = new THREE.PointsMaterial({
-                    color: 0xAAAAAA, size: 0.7, blending: THREE.AdditiveBlending,
-                    transparent: true, sizeAttenuation: true,
-                });
-                particleSystem = new THREE.Points(particles, particleMaterial);
-                scene.add(particleSystem);
-                animate();
-            }
-            function animate() {
-                requestAnimationFrame(animate);
-                particleSystem.rotation.y += 0.0002;
-                particleSystem.rotation.x += 0.0001;
-                renderer.render(scene, camera);
-            }
-            function onWindowResize() {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            }
-            window.addEventListener('resize', onWindowResize, false);
-            init();
-        });
-
-
-        // Command Palette Animation Logic
         document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('animation-container');
-            const typingTarget = 'Product Philosop';
+            // --- Elements ---
+            const spotlight = document.getElementById('spotlight-search');
+            const searchInput = document.getElementById('search-input');
+            const resultsList = document.querySelector('.search-results-list');
+            const pastedContent = document.getElementById('pasted-content');
+            const textCursor = document.getElementById('text-cursor');
 
-            const allItems = [
-                { match: "Interesting Reads", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-red-500"><!-- icon --></div><div><p class="text-gray-800">Interesting Reads</p><p class="text-gray-500 text-xs">1 item • Stash</p></div></div>` },
-                { match: "Quotes", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-orange-500"><!-- icon --></div><div><p class="text-gray-800">Quotes</p><p class="text-gray-500 text-xs">4 items • Stash</p></div></div>` },
-                { match: "Product Philosophy", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-amber-500"><!-- icon --></div><div><p class="text-gray-800">Product Philosophy</p><p class="text-gray-500 text-xs">3 items • Stash</p></div></div>` },
-                { match: "obviousness", content: 'Trace isn’t about features. It’s about obviousness. It behaves the way your mind expects. — <a href="/" class="text-gray-400 hover:text-blue-600 underline">Trace: The Reflexive Memory Engine</a>', stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-400 mt-0.5"><!-- icon --></div><div><p class="text-gray-600">Trace isn't about features. It's about <span class="font-bold text-gray-800">obviousness</span>...</p><div class="flex items-center text-xs text-amber-600 mt-1"><span>Product Philosophy</span></div></div></div>`},
-                { match: "user expects", content: "If a user expects something—Esc to dismiss, arrow keys to navigate, Enter to commit—it should already work.", stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-400 mt-0.5"><!-- icon --></div><div><p class="text-gray-600">If a <span class="font-bold text-gray-800">user expects</span> something—Esc to dismiss...</p><div class="flex items-center text-xs text-amber-600 mt-1"><span>Product Philosophy</span></div></div></div>` },
+            // --- Mock Data ---
+            const mockData = [
+                { type: 'stash', title: 'Good Reads', items: 2, icon: '📚' },
+                { type: 'stash', title: 'Email Snippets', items: 1, icon: '🗂️' },
+                { type: 'clip', title: 'Good morning. While you were getting your beauty rest...', stash: 'Email Snippets', icon: '📄', content: "Good morning. While you were getting your beauty rest last night, our website deployment was a success. Full report to follow." },
+                { type: 'stash', title: 'Quotes', items: 5, icon: '💬' },
+                { type: 'stash', title: 'Tweets', items: 5, icon: '🐦' },
             ];
 
-            function renderItems(itemsToRender, selector) {
-                const paletteContainer = container.querySelector(selector);
-                if (paletteContainer) {
-                    paletteContainer.innerHTML = itemsToRender.map((item, index) => 
-                        `<div id="item-${index}" class="palette-item" data-match="${item.match}" data-stash="${item.stash || ''}">${item.html}</div>`
-                    ).join('');
-                }
-            }
+            // --- State ---
+            let animationStep = 0;
+            let selectedIndex = 0;
+            let currentFilter = '';
 
-            async function runAnimation() {
-                // 1. Reset and Initial State
-                container.innerHTML = `
-                    <div id="palette-wrapper" class="w-full max-w-sm transition-opacity duration-300">
-                        <div id="query-container" class="w-full font-mono text-lg text-gray-800 mb-2">
-                           <span class="text-gray-500">;;</span><span id="typing-span"></span><span class="blinking-cursor"></span>
-                        </div>
-                        <div id="palette-container" class="w-full bg-white rounded-lg shadow-2xl border border-gray-200 font-sans text-sm overflow-hidden divide-y divide-gray-200">
-                        </div>
-                    </div>
-                `;
-                renderItems(allItems, '#palette-container');
+            // --- Functions ---
+            const renderResults = () => {
+                resultsList.innerHTML = '';
+                const filteredData = currentFilter ? mockData.filter(item =>
+                    item.title.toLowerCase().includes(currentFilter.toLowerCase())
+                ) : mockData;
+
+                filteredData.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'search-item';
+                    if (index === selectedIndex) {
+                        li.classList.add('selected');
+                    }
+                    if (item.type === 'stash') {
+                        li.innerHTML = `
+                            <span class="item-icon">${item.icon}</span>
+                            <div class="item-text">
+                                <div class="item-title">${item.title}</div>
+                                <div class="item-subtitle">${item.items} item${item.items > 1 ? 's' : ''} • Stash</div>
+                            </div>`;
+                    } else {
+                        li.innerHTML = `
+                            <span class="item-icon">${item.icon}</span>
+                            <div class="item-text">
+                                <div class="item-title">${item.title}</div>
+                                <div class="item-subtitle">in ${item.stash}</div>
+                            </div>`;
+                    }
+                    resultsList.appendChild(li);
+                });
+            };
+            
+            const typeEffect = (element, text, duration, onStep, onComplete) => {
+                let i = 0;
+                const isInput = element.tagName === 'INPUT';
+                if (isInput) element.value = ''; else element.innerHTML = '';
                 
-                const typingSpan = document.getElementById('typing-span');
-                const paletteItems = Array.from(container.querySelectorAll('.palette-item'));
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        if (isInput) element.value += text.charAt(i);
+                        else element.innerHTML += text.charAt(i);
+                        
+                        if (onStep) onStep(isInput ? element.value : element.innerHTML);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        if (onComplete) onComplete();
+                    }
+                }, duration);
+            };
 
-                // Pause to showcase the initial palette
-                await new Promise(r => setTimeout(r, 1500));
-
-                // 2. Animate Typing and Filtering
-                for (let i = 0; i <= typingTarget.length; i++) {
-                    await new Promise(r => setTimeout(r, 90));
-                    const currentText = typingTarget.substring(0, i);
-                    typingSpan.textContent = currentText;
-
-                    paletteItems.forEach(item => {
-                        const matchText = (item.dataset.match || "").toLowerCase();
-                        const stashText = (item.dataset.stash || "").toLowerCase();
-                        const isMatch = matchText.includes(currentText.toLowerCase()) || stashText.includes(currentText.toLowerCase());
-                        if (!isMatch) {
-                            item.classList.add('hidden');
-                        } else {
-                            item.classList.remove('hidden');
-                        }
-                    });
+            const resetAnimation = () => {
+                animationStep = 0;
+                spotlight.classList.remove('visible');
+                searchInput.value = '';
+                pastedContent.textContent = '';
+                selectedIndex = 0;
+                currentFilter = '';
+                setTimeout(runAnimation, 2000); // Wait a bit before restarting
+            };
+            
+            const runAnimation = () => {
+                switch (animationStep) {
+                    case 0: // Show spotlight
+                        pastedContent.textContent = '';
+                        textCursor.style.display = 'inline-block';
+                        setTimeout(() => {
+                            spotlight.classList.add('visible');
+                            renderResults();
+                            animationStep++;
+                            runAnimation();
+                        }, 1500);
+                        break;
+                    case 1: // Type "Good" into search
+                        const searchQuery = "Good";
+                        typeEffect(searchInput, searchQuery, 150,
+                            (currentValue) => { // onStep
+                                currentFilter = currentValue;
+                                selectedIndex = 0;
+                                renderResults();
+                            },
+                            () => { // onComplete
+                                animationStep++;
+                                runAnimation();
+                            }
+                        );
+                        break;
+                    case 2: // Navigate down to the second result
+                        setTimeout(() => {
+                            selectedIndex = 1;
+                            renderResults();
+                            animationStep++;
+                            runAnimation();
+                        }, 1000);
+                        break;
+                    case 3: // "Press Enter" - close spotlight
+                        setTimeout(() => {
+                            spotlight.classList.remove('visible');
+                            animationStep++;
+                            runAnimation();
+                        }, 1000);
+                        break;
+                    case 4: // Paste the content with typewriter effect
+                        setTimeout(() => {
+                            const filteredData = mockData.filter(item => item.title.toLowerCase().includes(currentFilter.toLowerCase()));
+                            const selectedItem = filteredData[selectedIndex];
+                            if (selectedItem && selectedItem.content) {
+                                textCursor.style.display = 'none'; // Hide cursor while typing
+                                typeEffect(pastedContent, selectedItem.content, 30, null, () => {
+                                    textCursor.style.display = 'inline-block'; // Show cursor again
+                                    animationStep++;
+                                    runAnimation();
+                                });
+                            } else {
+                                // If something went wrong, just reset
+                                animationStep++;
+                                runAnimation();
+                            }
+                        }, 500);
+                        break;
+                     case 5: // Wait and reset
+                        setTimeout(resetAnimation, 4000);
+                        break;
                 }
-                
-                await new Promise(r => setTimeout(r, 700));
+            };
 
-                // 3. Navigate
-                const visibleItems = paletteItems.filter(item => !item.classList.contains('hidden'));
-                const stashHeader = visibleItems.find(item => item.id === 'item-2');
-                const clipToSelect = visibleItems.find(item => item.id === 'item-3'); // The 'obviousness' clip
-                
-                if (stashHeader) {
-                    await new Promise(r => setTimeout(r, 800));
-                    stashHeader.classList.add('selected');
-                }
-                if (clipToSelect) {
-                    await new Promise(r => setTimeout(r, 800));
-                    if (stashHeader) stashHeader.classList.remove('selected');
-                    clipToSelect.classList.add('selected');
-                }
-
-                // 4. Paste
-                await new Promise(r => setTimeout(r, 1200));
-                const queryContainer = document.getElementById('query-container');
-                const paletteContainer = document.getElementById('palette-container');
-                
-                if(paletteContainer) {
-                    paletteContainer.style.transition = 'opacity 0.3s ease';
-                    paletteContainer.style.opacity = 0;
-                }
-               
-                await new Promise(r => setTimeout(r, 300));
-                
-                if (queryContainer) {
-                    queryContainer.className = 'w-full text-lg text-gray-800 font-sans';
-                    queryContainer.innerHTML = `<p>${allItems[3].content}<span class="blinking-cursor"></span></p>`;
-                }
-                 if (paletteContainer) paletteContainer.remove();
-                
-                // 5. Loop
-                await new Promise(r => setTimeout(r, 5000));
-                runAnimation();
-            }
-
+            // --- Start Animation ---
             runAnimation();
         });
-
     </script>
+
 </body>
 </html>
