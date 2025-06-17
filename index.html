@@ -223,8 +223,8 @@
         #trace-popover.visible { opacity: 1; visibility: visible; transform: translateY(0); }
         .popover-header { font-weight: 500; padding: 4px 8px; }
         .popover-list { list-style: none; padding: 0; margin: 4px 0; }
-        .popover-list-item { display: flex; align-items: center; padding: 6px 8px; border-radius: 6px; }
-        .popover-list-item:hover { background-color: #f0f0f0; }
+        .popover-list-item { display: flex; align-items: center; padding: 6px 8px; border-radius: 6px; cursor: pointer; transition: background-color .2s; }
+        .popover-list-item:hover, .popover-list-item.selected { background-color: #e8e8ed; }
         .popover-list-item span { margin-left: 8px; }
         .popover-search { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 6px 8px; margin: 8px 0; }
         .popover-button {
@@ -328,12 +328,13 @@
             const searchInput = document.getElementById('search-input');
             const resultsList = document.querySelector('.search-results-list');
 
-            const emailViewHTML = `<p>To: team@example.com</p><p>Subject: Interesting find for the project</p><br><p>Hi Team,</p><p>Found a great quote for our presentation:</p><p><span id="pasted-content"></span><span id="text-cursor"></span></p>`;
+            const emailViewHTML = `<p>To: team@acme.com</p><p>Subject: Interesting find for the project</p><br><p>Hi Team,</p><p>Found a great quote for our presentation:</p><p><span id="pasted-content"></span><span id="text-cursor"></span></p>`;
             const webViewHTML = `<div class="webpage-view" style="font-family: 'Inter', sans-serif;"><h1 style="font-family: Georgia, serif;">The Art of Invention</h1><p>Innovation is a complex process, often misunderstood. It is not a single event, but a series of small insights and hard work. Many pioneers have discussed this, but few as eloquently as computer scientist Alan Kay.</p><p>His philosophy emphasizes that true innovation requires a shift in perspective. You must not only solve the problem at hand, but also anticipate future needs. He famously stated that <span id="quote-to-select">the best way to predict the future is to invent it.</span> This single sentence captures the proactive and creative spirit required for groundbreaking work.</p></div>`;
-            const popoverHTML = `<div id="trace-popover"><div class="popover-header">Save to a Stash</div><ul class="popover-list"><li class="popover-list-item">💬<span>Quotes</span></li><li class="popover-list-item">💌<span>Email Snippets</span></li></ul><input type="text" class="popover-search" placeholder="Search or create a stash..."><button class="popover-button">Mark it</button><div class="popover-tip">💡 Type ‘;’ in any text field to search your clips</div></div>`;
+            const popoverHTML = `<div id="trace-popover"><div class="popover-header">Save to a Stash</div><ul class="popover-list"><li class="popover-list-item" data-stash="Quotes">💬<span>Quotes</span></li><li class="popover-list-item" data-stash="Email Snippets">💌<span>Email Snippets</span></li></ul><input type="text" class="popover-search" placeholder="Search or create a stash..."><button class="popover-button">Mark it</button><div class="popover-tip">💡 Type ‘;’ in any text field to search your clips</div></div>`;
             
             const mockData = [
-                { type: 'clip', title: 'The best way to predict the future is to invent it.', icon: '💡', source: 'The Art of Invention', sourceUrl: '#', content: '"The best way to predict the future is to invent it."' },
+                { type: 'clip', title: 'The best way to predict the future is to invent it.', icon: '💡', stash: 'Quotes', source: 'The Art of Invention', sourceUrl: '#', content: '"The best way to predict the future is to invent it."' },
+                { type: 'stash', title: 'Quotes', items: 1, icon: '💬' },
                 { type: 'stash', title: 'Email Snippets', items: 1, icon: '🗂️' },
                 { type: 'stash', title: 'Project Ideas', items: 3, icon: '🚀' }
             ];
@@ -347,7 +348,12 @@
                     const li = document.createElement('li');
                     li.className = 'search-item';
                     if (index === selectedIndex) li.classList.add('selected');
-                    let subtitleHTML = item.source ? `<div class="item-subtitle"><i class="gg-link"></i> Source: ${item.source}</div>` : (item.items ? `<div class="item-subtitle">${item.items} item${item.items > 1 ? 's' : ''} • Stash</div>` : '');
+                    let subtitleHTML = '';
+                    if (item.type === 'clip' && item.stash) {
+                        subtitleHTML = `<div class="item-subtitle">in ${item.stash}</div>`;
+                    } else if (item.type === 'stash') {
+                         subtitleHTML = `<div class="item-subtitle">${item.items || 0} item${(item.items || 0) !== 1 ? 's' : ''} • Stash</div>`;
+                    }
                     li.innerHTML = `<span class="item-icon">${item.icon}</span><div class="item-text"><div class="item-title">${item.title}</div>${subtitleHTML}</div>`;
                     resultsList.appendChild(li);
                 });
@@ -392,12 +398,16 @@
                         if (!popover || !quoteEl) return;
                         const quoteRect = quoteEl.getBoundingClientRect();
                         const screenRect = screenWrapper.getBoundingClientRect();
-                        // Position popover below the selected text
                         popover.style.top = `${quoteRect.bottom - screenRect.top + 10}px`;
                         popover.style.left = `${quoteRect.left - screenRect.left}px`;
                         setTimeout(() => { popover.classList.add('visible'); animationStep++; runAnimation(); }, 500);
                         break;
-                    case 2: // "Click" Mark It button
+                    case 2: // Select "Quotes" stash in popover
+                        const quotesStash = document.querySelector('.popover-list-item[data-stash="Quotes"]');
+                        if (quotesStash) quotesStash.classList.add('selected');
+                        setTimeout(() => { animationStep++; runAnimation(); }, 800);
+                        break;
+                    case 3: // "Click" Mark It button
                         const button = document.querySelector('.popover-button');
                         if (button) button.classList.add('clicked');
                         setTimeout(() => {
@@ -408,7 +418,7 @@
                             runAnimation();
                         }, 800);
                         break;
-                    case 3: // Switch back to email view
+                    case 4: // Switch back to email view
                         setTimeout(() => {
                              const popover = document.getElementById('trace-popover');
                              if(popover) popover.remove();
@@ -417,25 +427,23 @@
                              runAnimation();
                         }, 500);
                         break;
-                    case 4: // Show spotlight
+                    case 5: // Show spotlight
                          setTimeout(() => { spotlight.classList.add('visible'); renderResults(); animationStep++; runAnimation(); }, 1000);
                         break;
-                    case 5: // Type search query
+                    case 6: // Type search query
                         typeEffect(searchInput, "predict", 150, (val) => { currentFilter = val; renderResults(); }, () => { animationStep++; runAnimation(); });
                         break;
-                    case 6: // "Press Enter" - close spotlight
+                    case 7: // "Press Enter" - close spotlight
                         setTimeout(() => { spotlight.classList.remove('visible'); animationStep++; runAnimation(); }, 1500);
                         break;
-                    case 7: // Paste the content with link
+                    case 8: // Paste the content with link
                         setTimeout(() => {
                             const pastedContentEl = document.getElementById('pasted-content');
                             const textCursorEl = document.getElementById('text-cursor');
                             if(!pastedContentEl || !textCursorEl) { resetAnimation(); return; }
                             const itemToPaste = mockData[0];
                             textCursorEl.style.display = 'none';
-                            // Type the quote first
                             typeEffect(pastedContentEl, itemToPaste.content, 40, null, () => {
-                                // After typing, append the source link
                                 const sourceLinkHTML = ` (<a href="${itemToPaste.sourceUrl}" target="_blank" class="text-blue-500 hover:underline">Source</a>)`;
                                 pastedContentEl.innerHTML += sourceLinkHTML;
                                 textCursorEl.style.display = 'inline-block';
@@ -444,7 +452,7 @@
                             });
                         }, 500);
                         break;
-                    case 8: // Wait and reset
+                    case 9: // Wait and reset
                         setTimeout(resetAnimation, 5000);
                         break;
                 }
