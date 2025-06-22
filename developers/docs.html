@@ -1,420 +1,501 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Chosen Palette: Slate & Indigo -->
-    <!-- Application Structure Plan: The SPA is designed as a multi-tabbed interface to best serve a developer audience. This structure allows users to either follow a linear learning path (Overview -> Quick Start -> etc.) or jump directly to the specific information they need (API Reference). The core interaction is in the 'API Reference' tab, which uses a two-column layout. A master list of API components (properties/methods) is on the left, and clicking an item dynamically displays its full details on the right. This prevents information overload and creates an efficient, explorable reference. This task-oriented design is superior to a simple linear document for technical documentation. -->
-    <!-- Visualization & Content Choices: The report is purely textual/code-based, so no charts are needed. The key is presenting hierarchical information effectively. Goal: Reference -> Viz/Method: Interactive Master-Detail Lists -> Interaction: Click-to-display -> Justification: This is the standard, most effective UX pattern for API documentation, allowing for both quick scanning and in-depth exploration without leaving the page. Goal: Guide -> Viz/Method: Numbered lists with code blocks -> Interaction: Click-to-copy -> Justification: Makes initial steps easy to follow and use. Goal: Demonstrate -> Viz/Method: Full code block display -> Interaction: Click-to-copy -> Justification: Allows developers to easily grab and adapt full working examples. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<html lang="en" class="scroll-smooth">
 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trace Apps Developer Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        /* Custom Styles */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
+            background-color: #0A0A0A;
+            color: #9E9E9E;
         }
-        .prose code {
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #F5F5F5;
+        }
+
+        pre, code {
             font-family: 'JetBrains Mono', monospace;
-            background-color: #e2e8f0; /* slate-200 */
-            color: #1e293b; /* slate-800 */
-            padding: 0.125rem 0.25rem;
+        }
+
+        .prose-invert a {
+            color: #60A5FA;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .prose-invert a:hover {
+            color: #93C5FD;
+        }
+        
+        .nav-link.active {
+            color: #F5F5F5;
+            font-weight: 500;
+        }
+
+        .prose-invert code {
+            color: #F5F5F5;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.2em 0.4em;
             border-radius: 0.25rem;
-            font-size: 0.9em;
+            font-size: 0.875em;
         }
-        .prose pre {
-            font-family: 'JetBrains Mono', monospace;
-            background-color: #0f172a; /* slate-900 */
-            color: #e2e8f0; /* slate-200 */
-            padding: 1.25rem;
+
+        .prose-invert pre {
+            background-color: #111111;
+            border: 1px solid #27272A;
             border-radius: 0.5rem;
-            overflow-x: auto;
+            padding: 1.25rem;
             position: relative;
         }
-        .copy-btn {
+
+        .prose-invert pre code {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9em;
+        }
+
+        .copy-button {
             position: absolute;
             top: 0.75rem;
             right: 0.75rem;
-            background-color: #334155; /* slate-700 */
-            color: #cbd5e1; /* slate-300 */
-            border: none;
-            padding: 0.25rem 0.6rem;
-            font-size: 0.75rem;
+            background-color: #1f222c;
+            border: 1px solid #374151;
+            color: #d1d5db;
+            padding: 0.25rem 0.5rem;
             border-radius: 0.375rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.2s;
+            transition: all 0.2s ease;
         }
-        .prose pre:hover .copy-btn {
-            opacity: 1;
+
+        .copy-button:hover {
+            background-color: #374151;
+            color: #fff;
         }
-        .tab {
-            transition: all 0.2s ease-in-out;
+        
+        .copy-button.copied {
+            background-color: #059669;
+            color: #fff;
+            border-color: #047857;
         }
-        .tab.active {
-            border-color: #4f46e5; /* indigo-600 */
-            color: #4f46e5; /* indigo-600 */
-            background-color: #eef2ff; /* indigo-50 */
+        
+        .prose-invert table {
+            border: 1px solid #27272A;
         }
-        .api-list-item {
-            transition: all 0.2s ease-in-out;
+        .prose-invert th {
+            color: #F5F5F5;
+            border-bottom: 1px solid #27272A;
         }
-        .api-list-item.active, .api-list-item:hover {
-            background-color: #eef2ff; /* indigo-50 */
-            color: #3730a3; /* indigo-800 */
-            transform: translateX(2px);
+        .prose-invert td {
+            border-bottom: 1px solid #27272A;
         }
+
+        .prose-invert blockquote {
+            border-left-color: #3B82F6;
+            color: #D1D5DB;
+        }
+
+        /* Syntax Highlighting (Simple) */
+        .token.comment { color: #6a9955; }
+        .token.keyword { color: #c586c0; }
+        .token.string { color: #ce9178; }
+        .token.function { color: #dcdcaa; }
+        .token.number { color: #b5cea8; }
+        .token.boolean { color: #569cd6; }
+        .token.operator { color: #d4d4d4; }
+        .token.punctuation { color: #d4d4d4; }
+        .token.property { color: #9cdcfe; }
+        .token.parameter { color: #9cdcfe; }
     </style>
 </head>
-<body class="antialiased text-slate-700">
 
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        
-        <header class="mb-8">
-            <h1 class="text-4xl font-bold tracking-tight text-slate-900">Trace Apps Developer Documentation</h1>
-            <p class="mt-2 text-lg text-slate-600">Your complete guide to building powerful, secure, and integrated applications on the Trace platform.</p>
-        </header>
+<body class="antialiased">
 
-        <main>
-            <nav class="flex border-b border-slate-200 mb-8" aria-label="Tabs">
-                <button id="tab-btn-overview" class="tab active font-semibold text-slate-600 hover:text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="overview">Overview</button>
-                <button id="tab-btn-quickstart" class="tab font-semibold text-slate-600 hover:text-indigo-600 whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm border-transparent" data-tab="quickstart">Quick Start</button>
-                <button id="tab-btn-api" class="tab font-semibold text-slate-600 hover:text-indigo-600 whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm border-transparent" data-tab="api">API Reference</button>
-                <button id="tab-btn-examples" class="tab font-semibold text-slate-600 hover:text-indigo-600 whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm border-transparent" data-tab="examples">Examples</button>
-            </nav>
+    <div class="relative mx-auto max-w-screen-xl">
+        <div class="flex flex-col lg:flex-row">
 
-            <div id="tab-content-overview" class="prose max-w-none">
-                <h2 class="text-2xl font-semibold text-slate-800">What are Trace Apps?</h2>
-                <p>Trace Apps are lightweight, single-purpose applications that extend the functionality of the Trace Spotlight Search. They are triggered by a forward slash (<code>/</code>) followed by a command (e.g., <code>/notes</code>, <code>/summarize</code>).</p>
-                <p>The app system is designed with security and simplicity in mind. Each app runs in a sandboxed environment and interacts with Trace's core functionality through a controlled, secure API. This ensures that third-party apps cannot access sensitive user data or interfere with the extension's primary operations.</p>
-            </div>
+            <!-- Sticky Sidebar Navigation -->
+            <aside class="w-full lg:w-64 lg:flex-shrink-0 lg:px-4">
+                <div class="lg:sticky lg:top-0 lg:py-8 h-full">
+                    <nav id="docs-nav" class="p-4 lg:p-0">
+                        <h4 class="mb-4 text-sm font-bold uppercase tracking-wider text-gray-500">On this page</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#introduction" class="nav-link text-gray-400 transition-colors duration-200 hover:text-white">What are Trace Apps?</a></li>
+                            <li><a href="#getting-started" class="nav-link text-gray-400 transition-colors duration-200 hover:text-white">Getting Started</a></li>
+                            <li><a href="#app-definition" class="nav-link text-gray-400 transition-colors duration-200 hover:text-white">The appDefinition Object</a></li>
+                            <li>
+                                <a href="#core-functions" class="nav-link text-gray-400 transition-colors duration-200 hover:text-white">Core Functions</a>
+                                <ul class="pl-4 mt-2 space-y-2 border-l border-gray-800">
+                                    <li><a href="#handler" class="nav-link text-sm text-gray-500 hover:text-white">handler()</a></li>
+                                    <li><a href="#on-enter" class="nav-link text-sm text-gray-500 hover:text-white">onEnter()</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#trace-api" class="nav-link text-gray-400 transition-colors duration-200 hover:text-white">The Sandboxed traceApi</a>
+                                 <ul class="pl-4 mt-2 space-y-2 border-l border-gray-800">
+                                    <li><a href="#api-getStashes" class="nav-link text-sm text-gray-500 hover:text-white">getStashes()</a></li>
+                                    <li><a href="#api-createStash" class="nav-link text-sm text-gray-500 hover:text-white">createStash()</a></li>
+                                    <li><a href="#api-createClip" class="nav-link text-sm text-gray-500 hover:text-white">createClip()</a></li>
+                                    <li><a href="#api-showNotification" class="nav-link text-sm text-gray-500 hover:text-white">showNotification()</a></li>
+                                    <li><a href="#api-hideSpotlight" class="nav-link text-sm text-gray-500 hover:text-white">hideSpotlight()</a></li>
+                                    <li><a href="#api-refreshData" class="nav-link text-sm text-gray-500 hover:text-white">refreshData()</a></li>
+                                    <li><a href="#api-escapeHTML" class="nav-link text-sm text-gray-500 hover:text-white">escapeHTML()</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#full-example" class="nav-link text-gray-400 transition-colors duration-200 hover:text-white">Full Example: /todo</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
 
-            <div id="tab-content-quickstart" class="prose max-w-none hidden">
-                 <h2 class="text-2xl font-semibold text-slate-800">Creating Your First App</h2>
-                 <p>Creating a Trace App involves two main steps: defining the app and registering it with the system.</p>
-                 <ol>
-                    <li>
-                        <strong>Create Your App File</strong>
-                        <p>For organization, it's recommended to create a new <code>.js</code> file for your app (e.g., <code>scripts/my-cool-app.js</code>) and include it in the `content_scripts` array in <code>manifest.json</code> <strong>before</strong> the main `content-script.js`.</p>
-                        <p>However, for simplicity, you can add your app definition directly to the <code>scripts/apps.js</code> file.</p>
-                    </li>
-                    <li>
-                        <strong>Register Your App</strong>
-                        <p>To register your app, you call the <code>window.TraceAppRegistry.register()</code> method, passing it your <code>appDefinition</code> object. This object contains all the metadata and logic for your app.</p>
-<pre><button class="copy-btn">Copy</button><code>// In scripts/apps.js or your own app file
-window.TraceAppRegistry.register({
-    // ... your app definition properties go here
-});</code></pre>
-                    </li>
-                 </ol>
-            </div>
+            <!-- Main Content -->
+            <main class="w-full min-w-0 flex-auto px-4 sm:px-6 lg:px-8 py-8">
+                <article class="prose prose-invert max-w-none prose-lg">
+                    
+                    <div class="mb-12">
+                        <p class="text-blue-400 font-semibold">API Documentation</p>
+                        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white">Trace Apps</h1>
+                        <p class="text-xl mt-4 text-gray-400">Welcome to the Trace Apps developer documentation! This guide will provide you with everything you need to know to build powerful, secure, and integrated applications on the Trace platform.</p>
+                    </div>
 
-            <div id="tab-content-api" class="hidden">
-                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-1">
-                        <div class="sticky top-8">
-                            <h3 class="text-lg font-semibold text-slate-800 mb-2">API Reference</h3>
-                            <p class="text-sm text-slate-500 mb-4">Click an item to see its full details, parameters, and usage examples.</p>
-                            
-                            <h4 class="font-semibold text-slate-900 mt-6 mb-2 border-b pb-1">App Definition</h4>
-                            <ul id="api-list-definition" class="space-y-1"></ul>
-                            
-                            <h4 class="font-semibold text-slate-900 mt-6 mb-2 border-b pb-1">Trace API</h4>
-                            <ul id="api-list-traceapi" class="space-y-1"></ul>
+                    <section id="introduction" class="mb-16 scroll-mt-20">
+                        <h2 class="text-3xl font-semibold border-b border-gray-800 pb-2">What are Trace Apps?</h2>
+                        <p>Trace Apps are lightweight, single-purpose applications that extend the functionality of the Trace Spotlight Search. They are triggered by a forward slash (<code>/</code>) followed by a command (e.g., <code>/notes</code>, <code>/summarize</code>).</p>
+                        <p>The app system is designed with security and simplicity in mind. Each app runs in a sandboxed environment and interacts with Trace's core functionality through a controlled, secure API. This ensures that third-party apps cannot access sensitive user data or interfere with the extension's primary operations.</p>
+                    </section>
+
+                    <section id="getting-started" class="mb-16 scroll-mt-20">
+                        <h2 class="text-3xl font-semibold border-b border-gray-800 pb-2">Getting Started</h2>
+                        <p>Creating a Trace App involves two main steps: defining the app and registering it with the system.</p>
+                        
+                        <h3 class="text-2xl font-semibold mt-8">Step 1: Create Your App File</h3>
+                        <p>For organization, it's recommended to create a new <code>.js</code> file for your app (e.g., <code>scripts/my-cool-app.js</code>) and include it in the <code>content_scripts</code> array in <code>manifest.json</code> <strong>before</strong> the main <code>content-script.js</code>.</p>
+                        <blockquote>For simplicity, you can also add your app definition directly to the <code>scripts/apps.js</code> file.</blockquote>
+
+                        <h3 class="text-2xl font-semibold mt-8">Step 2: Register Your App</h3>
+                        <p>To register your app, you call the <code>window.TraceAppRegistry.register()</code> method, passing it your <code>appDefinition</code> object.</p>
+                        <div class="code-container">
+<pre><code class="language-javascript"><span class="token-comment">// In scripts/apps.js or your own app file</span>
+<span class="token function">window</span><span class="token punctuation">.</span><span class="token property">TraceAppRegistry</span><span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token-comment">// ... your app definition properties go here</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
                         </div>
-                    </div>
-                    <div id="api-detail-panel" class="lg:col-span-2 prose max-w-none bg-white p-6 rounded-lg border border-slate-200 min-h-[60vh]">
-                        <p class="text-slate-500">Select an API component from the left to view its documentation.</p>
-                    </div>
-                 </div>
-            </div>
+                    </section>
+                    
+                    <section id="app-definition" class="mb-16 scroll-mt-20">
+                        <h2 class="text-3xl font-semibold border-b border-gray-800 pb-2">The appDefinition Object</h2>
+                        <p>The <code>appDefinition</code> is a JavaScript object that tells Trace everything it needs to know about your app. Here is a breakdown of its properties:</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="p-3">Property</th>
+                                        <th class="p-3">Type</th>
+                                        <th class="p-3">Required</th>
+                                        <th class="p-3">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-t border-gray-800">
+                                        <td class="p-3"><code>name</code></td>
+                                        <td class="p-3"><code>string</code></td>
+                                        <td class="p-3"><span class="text-green-400">Yes</span></td>
+                                        <td class="p-3">The user-facing name of the app (e.g., "Note").</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3"><code>trigger</code></td>
+                                        <td class="p-3"><code>string</code></td>
+                                        <td class="p-3"><span class="text-green-400">Yes</span></td>
+                                        <td class="p-3">The unique command that activates the app, starting with / (e.g., "/notes"). Must be lowercase.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3"><code>icon</code></td>
+                                        <td class="p-3"><code>string</code></td>
+                                        <td class="p-3"><span class="text-green-400">Yes</span></td>
+                                        <td class="p-3">An emoji or SVG string used to represent the app in the UI.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3"><code>description</code></td>
+                                        <td class="p-3"><code>string</code></td>
+                                        <td class="p-3"><span class="text-green-400">Yes</span></td>
+                                        <td class="p-3">A brief, one-sentence description of what the app does.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3"><code>requiresAuth</code></td>
+                                        <td class="p-3"><code>boolean</code></td>
+                                        <td class="p-3"><span class="text-yellow-400">No</span></td>
+                                        <td class="p-3">If true, the app can only be activated if the user is signed in. Defaults to false.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3"><code>handler</code></td>
+                                        <td class="p-3"><code>function</code></td>
+                                        <td class="p-3"><span class="text-green-400">Yes</span></td>
+                                        <td class="p-3">A function called on every input change while the app is active. It returns a list of UI results.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3"><code>onEnter</code></td>
+                                        <td class="p-3"><code>function</code></td>
+                                        <td class="p-3"><span class="text-green-400">Yes</span></td>
+                                        <td class="p-3">An async function called when a user selects an app-action result. This is the app's core logic.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    
+                    <section id="core-functions" class="mb-16 scroll-mt-20">
+                        <h2 class="text-3xl font-semibold border-b border-gray-800 pb-2">Core Functions in Detail</h2>
+                        
+                        <div id="handler" class="scroll-mt-20">
+                            <h3 class="text-2xl font-semibold mt-8">handler(inputValue, traceApi)</h3>
+                            <p>This function is the dynamic part of your app. It's responsible for what the user sees in the results list as they type.</p>
+                            <p><strong>Parameters:</strong></p>
+                            <ul>
+                                <li><code>inputValue</code> (string): The text the user has typed after the app trigger.</li>
+                                <li><code>traceApi</code> (object): The sandboxed API for interacting with Trace.</li>
+                            </ul>
+                            <p><strong>Returns:</strong> An Array of result objects. Each object can have one of two <code>resultTypes</code>:</p>
+                            <p><strong>1. app-prompt:</strong> A non-interactive message to guide the user.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token-property">resultType</span><span class="token operator">:</span> <span class="token-string">'app-prompt'</span><span class="token punctuation">,</span>
+    <span class="token-property">displayText</span><span class="token operator">:</span> <span class="token-string">"Type a task and press Enter."</span>
+<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                            <p><strong>2. app-action:</strong> An interactive item. When the user selects this, the <code>onEnter</code> function is called.</p>
+                             <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token-property">resultType</span><span class="token operator">:</span> <span class="token-string">'app-action'</span><span class="token punctuation">,</span>
+    <span class="token-property">displayText</span><span class="token operator">:</span> <span class="token-string">`Add new to-do: "<span class="token-interpolation"><span class="token-interpolation-punctuation punctuation">${</span>inputValue<span class="token-interpolation-punctuation punctuation">}</span></span>"`</span><span class="token punctuation">,</span>
+    <span class="token-property">payload</span><span class="token operator">:</span> inputValue <span class="token-comment">// This data is passed to onEnter</span>
+<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
 
-            <div id="tab-content-examples" class="prose max-w-none hidden">
-                <h2 class="text-2xl font-semibold text-slate-800">Full Example: A "/todo" App</h2>
-                <p>Here is a complete, well-commented example of a simple to-do app. This app will save a new to-do item to a "To-Do List" stash. It demonstrates finding or creating a stash, constructing clip data, and using notifications.</p>
-<pre><button class="copy-btn">Copy</button><code>// Register the "/todo" app
-window.TraceAppRegistry.register({
-    name: "To-Do",
-    trigger: "/todo",
-    icon: "✅",
-    description: "Add an item to your To-Do List stash.",
-    requiresAuth: true, // This app will only run if the user is signed in.
+                        <div id="on-enter" class="scroll-mt-20">
+                            <h3 class="text-2xl font-semibold mt-12">async onEnter(payload, traceApi)</h3>
+                            <p>This function executes the main logic of your app. It runs when a user presses Enter on a result of type <code>app-action</code>.</p>
+                             <p><strong>Parameters:</strong></p>
+                            <ul>
+                                <li><code>payload</code> (any): The <code>payload</code> value you defined in the <code>app-action</code> object returned by your handler.</li>
+                                <li><code>traceApi</code> (object): The sandboxed API for interacting with Trace.</li>
+                            </ul>
+                        </div>
+                    </section>
 
-    handler(inputValue, traceApi) {
-        const todoText = inputValue.trim();
+                    <section id="trace-api" class="mb-16 scroll-mt-20">
+                        <h2 class="text-3xl font-semibold border-b border-gray-800 pb-2">The Sandboxed traceApi</h2>
+                        <p>To ensure security and stability, your app does not have direct access to Trace's internal state. Instead, it is given a <code>traceApi</code> object with a set of safe, approved functions.</p>
 
-        // If the user hasn't typed anything, prompt them.
-        if (!todoText) {
-            return [{
-                resultType: 'app-prompt',
-                displayText: "Type your to-do item and press Enter."
-            }];
-        }
+                        <div id="api-getStashes" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.getStashes()</h4>
+                            <p>Returns a deep copy (<code>Array&lt;Object&gt;</code>) of all the user's stashes. Each object has <code>id</code> and <code>name</code> properties.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">const</span> allStashes <span class="token operator">=</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">getStashes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                         <div id="api-createStash" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.createStash(name)</h4>
+                            <p>Returns a <code>Promise</code> that resolves with the newly created stash object.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">const</span> newStash <span class="token operator">=</span> <span class="token-keyword">await</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">createStash</span><span class="token punctuation">(</span><span class="token-string">"My New Stash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                         <div id="api-createClip" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.createClip(clipData)</h4>
+                            <p>Saves a clip. Returns a <code>Promise</code> that resolves when the clip has been sent to the service worker.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">const</span> clipData <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token-property">text</span><span class="token operator">:</span> <span class="token-string">"My clip content"</span><span class="token punctuation">,</span>
+    <span class="token-property">html</span><span class="token operator">:</span> <span class="token-string">"My &lt;b&gt;clip&lt;/b&gt; content"</span><span class="token punctuation">,</span>
+    <span class="token-property">timestamp</span><span class="token operator">:</span> <span class="token-keyword">new</span> <span class="token-function">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toISOString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token-property">url</span><span class="token operator">:</span> <span class="token-string">"https://example.com"</span><span class="token punctuation">,</span>
+    <span class="token-property">title</span><span class="token operator">:</span> <span class="token-string">"Example"</span><span class="token punctuation">,</span>
+    <span class="token-property">bundleId</span><span class="token operator">:</span> <span class="token-string">"some-bundle-id"</span><span class="token punctuation">,</span>
+    <span class="token-property">author</span><span class="token operator">:</span> <span class="token-string">"Trace"</span><span class="token punctuation">,</span>
+    <span class="token-property">faviconUrl</span><span class="token operator">:</span> <span class="token-string">""</span><span class="token punctuation">,</span>
+    <span class="token-property">ogImage</span><span class="token operator">:</span> <span class="token-string">""</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token-keyword">await</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">createClip</span><span class="token punctuation">(</span>clipData<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                        <div id="api-showNotification" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.showNotification(message, type)</h4>
+                            <p>Displays a notification. Type can be <code>'success'</code>, <code>'error'</code>, or <code>'info'</code>.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">showNotification</span><span class="token punctuation">(</span><span class="token-string">"It worked!"</span><span class="token punctuation">,</span> <span class="token-string">"success"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                        <div id="api-hideSpotlight" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.hideSpotlight()</h4>
+                            <p>Closes the Spotlight Search UI.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">hideSpotlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                        <div id="api-refreshData" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.refreshData()</h4>
+                            <p>Forces Trace to re-fetch all clips and stashes from the database. Returns a <code>Promise</code>.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">await</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">refreshData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                         <div id="api-escapeHTML" class="mt-8 scroll-mt-20">
+                            <h4 class="text-xl font-medium">traceApi.escapeHTML(string)</h4>
+                            <p>A utility function to safely escape a string for insertion into HTML.</p>
+                            <div class="code-container">
+<pre><code class="language-javascript"><span class="token-keyword">const</span> safeText <span class="token operator">=</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">escapeHTML</span><span class="token punctuation">(</span><span class="token-string">"&lt;script&gt;alert('oops')&lt;/script&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                            </div>
+                        </div>
+                    </section>
 
-        // Otherwise, show an action to create the to-do.
-        return [{
-            resultType: 'app-action',
-            displayText: `Add To-Do: "${traceApi.escapeHTML(todoText)}"`,
-            payload: todoText
-        }];
-    },
+                     <section id="full-example" class="mb-16 scroll-mt-20">
+                        <h2 class="text-3xl font-semibold border-b border-gray-800 pb-2">Full Example: A "/todo" App</h2>
+                        <p>Here is a complete, well-commented example of a simple to-do app. This app will save a new to-do item to a "To-Do List" stash.</p>
+                         <div class="code-container">
+<pre><code class="language-javascript"><span class="token-comment">// Register the "/todo" app</span>
+<span class="token function">window</span><span class="token punctuation">.</span><span class="token property">TraceAppRegistry</span><span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token-property">name</span><span class="token operator">:</span> <span class="token-string">"To-Do"</span><span class="token punctuation">,</span>
+    <span class="token-property">trigger</span><span class="token operator">:</span> <span class="token-string">"/todo"</span><span class="token punctuation">,</span>
+    <span class="token-property">icon</span><span class="token operator">:</span> <span class="token-string">"✅"</span><span class="token punctuation">,</span>
+    <span class="token-property">description</span><span class="token operator">:</span> <span class="token-string">"Add an item to your To-Do List stash."</span><span class="token punctuation">,</span>
+    <span class="token-property">requiresAuth</span><span class="token operator">:</span> <span class="token-boolean">true</span><span class="token punctuation">,</span> <span class="token-comment">// This app will only run if the user is signed in.</span>
 
-    async onEnter(payload, traceApi) {
-        const todoText = payload;
-        if (!todoText) return;
+    <span class="token function">handler</span><span class="token punctuation">(</span><span class="token-parameter">inputValue</span><span class="token punctuation">,</span> <span class="token-parameter">traceApi</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token-keyword">const</span> todoText <span class="token operator">=</span> inputValue<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        try {
-            // 1. Find or create the "To-Do List" stash.
-            let todoStash = traceApi.getStashes().find(b => b.name.toLowerCase() === 'to-do list');
-            if (!todoStash) {
-                traceApi.showNotification("Creating 'To-Do List' stash...", 'info');
-                todoStash = await traceApi.createStash('To-Do List');
-                // Refresh data so the new stash is available for the next operation.
-                await traceApi.refreshData();
-            }
+        <span class="token-comment">// If the user hasn't typed anything, prompt them.</span>
+        <span class="token-keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>todoText<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token-keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+                <span class="token-property">resultType</span><span class="token operator">:</span> <span class="token-string">'app-prompt'</span><span class="token punctuation">,</span>
+                <span class="token-property">displayText</span><span class="token operator">:</span> <span class="token-string">"Type your to-do item and press Enter."</span>
+            <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-            if (!todoStash || !todoStash.id) {
-                throw new Error("Could not find or create the 'To-Do List' stash.");
-            }
+        <span class="token-comment">// Otherwise, show an action to create the to-do.</span>
+        <span class="token-keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            <span class="token-property">resultType</span><span class="token operator">:</span> <span class="token-string">'app-action'</span><span class="token punctuation">,</span>
+            <span class="token-property">displayText</span><span class="token operator">:</span> <span class="token-string">`Add To-Do: "<span class="token-interpolation"><span class="token-interpolation-punctuation punctuation">${</span><span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">escapeHTML</span><span class="token punctuation">(</span>todoText<span class="token punctuation">)</span><span class="token-interpolation-punctuation punctuation">}</span></span>"`</span><span class="token punctuation">,</span>
+            <span class="token-property">payload</span><span class="token operator">:</span> todoText
+        <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
 
-            // 2. Construct the clip data for the new to-do item.
-            const clipData = {
-                text: todoText,
-                html: `[ ] ${traceApi.escapeHTML(todoText)}`, // Add a simple checkbox style
-                timestamp: new Date().toISOString(),
-                url: `trace://todo/${Date.now()}`, // Internal app-specific URL
-                title: `To-Do: ${todoText}`,
-                bundleId: todoStash.id,
-                author: "Trace To-Do",
-                faviconUrl: '',
-                ogImage: ''
-            };
+    <span class="token-keyword">async</span> <span class="token function">onEnter</span><span class="token punctuation">(</span><span class="token-parameter">payload</span><span class="token punctuation">,</span> <span class="token-parameter">traceApi</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token-keyword">const</span> todoText <span class="token operator">=</span> payload<span class="token punctuation">;</span>
+        <span class="token-keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>todoText<span class="token punctuation">)</span> <span class="token-keyword">return</span><span class="token punctuation">;</span>
 
-            // 3. Save the clip and provide feedback.
-            await traceApi.createClip(clipData);
-            traceApi.showNotification("To-Do item added!", 'success');
-            traceApi.hideSpotlight();
+        <span class="token-keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token-comment">// 1. Find or create the "To-Do List" stash.</span>
+            <span class="token-keyword">let</span> todoStash <span class="token operator">=</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">getStashes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token-parameter">b</span> <span class="token operator">=&gt;</span> b<span class="token punctuation">.</span>name<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token-string">'to-do list'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token-keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>todoStash<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">showNotification</span><span class="token punctuation">(</span><span class="token-string">"Creating 'To-Do List' stash..."</span><span class="token punctuation">,</span> <span class="token-string">'info'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                todoStash <span class="token operator">=</span> <span class="token-keyword">await</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">createStash</span><span class="token punctuation">(</span><span class="token-string">'To-Do List'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token-keyword">await</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">refreshData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-        } catch (e) {
-            console.error("Trace 'To-Do' App Error:", e);
-            traceApi.showNotification(`Error: ${e.message}`, 'error');
-            traceApi.hideSpotlight();
-        }
-    }
-});</code></pre>
-            </div>
-        </main>
+            <span class="token-keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>todoStash <span class="token operator">||</span> <span class="token operator">!</span>todoStash<span class="token punctuation">.</span>id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token-keyword">throw</span> <span class="token-keyword">new</span> <span class="token-function">Error</span><span class="token punctuation">(</span><span class="token-string">"Could not find or create the 'To-Do List' stash."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token-comment">// 2. Construct the clip data for the new to-do item.</span>
+            <span class="token-keyword">const</span> clipData <span class="token operator">=</span> <span class="token punctuation">{</span>
+                <span class="token-property">text</span><span class="token operator">:</span> todoText<span class="token punctuation">,</span>
+                <span class="token-property">html</span><span class="token operator">:</span> <span class="token-string">`[ ] <span class="token-interpolation"><span class="token-interpolation-punctuation punctuation">${</span><span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">escapeHTML</span><span class="token punctuation">(</span>todoText<span class="token punctuation">)</span><span class="token-interpolation-punctuation punctuation">}</span></span>`</span><span class="token punctuation">,</span>
+                <span class="token-property">timestamp</span><span class="token operator">:</span> <span class="token-keyword">new</span> <span class="token-function">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toISOString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token-property">url</span><span class="token operator">:</span> <span class="token-string">`trace://todo/<span class="token-interpolation"><span class="token-interpolation-punctuation punctuation">${</span>Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token-interpolation-punctuation punctuation">}</span></span>`</span><span class="token punctuation">,</span>
+                <span class="token-property">title</span><span class="token operator">:</span> <span class="token-string">`To-Do: <span class="token-interpolation"><span class="token-interpolation-punctuation punctuation">${</span>todoText<span class="token-interpolation-punctuation punctuation">}</span></span>`</span><span class="token punctuation">,</span>
+                <span class="token-property">bundleId</span><span class="token operator">:</span> todoStash<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+                <span class="token-property">author</span><span class="token operator">:</span> <span class="token-string">"Trace To-Do"</span><span class="token punctuation">,</span>
+                <span class="token-property">faviconUrl</span><span class="token operator">:</span> <span class="token-string">''</span><span class="token punctuation">,</span>
+                <span class="token-property">ogImage</span><span class="token operator">:</span> <span class="token-string">''</span>
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+            <span class="token-comment">// 3. Save the clip and provide feedback.</span>
+            <span class="token-keyword">await</span> <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">createClip</span><span class="token punctuation">(</span>clipData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">showNotification</span><span class="token punctuation">(</span><span class="token-string">"To-Do item added!"</span><span class="token punctuation">,</span> <span class="token-string">'success'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">hideSpotlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span> <span class="token-keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token-string">"Trace 'To-Do' App Error:"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">showNotification</span><span class="token punctuation">(</span><span class="token-string">`Error: <span class="token-interpolation"><span class="token-interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>message<span class="token-interpolation-punctuation punctuation">}</span></span>`</span><span class="token punctuation">,</span> <span class="token-string">'error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token-property">traceApi</span><span class="token punctuation">.</span><span class="token function">hideSpotlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+                        </div>
+                    </section>
+                </article>
+            </main>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            const apiData = {
-                definition: {
-                    name: {
-                        type: 'string',
-                        required: 'Yes',
-                        description: 'The user-facing name of the app (e.g., "Note").'
-                    },
-                    trigger: {
-                        type: 'string',
-                        required: 'Yes',
-                        description: 'The unique command that activates the app, starting with <code>/</code> (e.g., "/notes"). Must be lowercase.'
-                    },
-                    icon: {
-                        type: 'string',
-                        required: 'Yes',
-                        description: 'An emoji used to represent the app in the UI.'
-                    },
-                    description: {
-                        type: 'string',
-                        required: 'Yes',
-                        description: 'A brief, one-sentence description of what the app does.'
-                    },
-                    requiresAuth: {
-                        type: 'boolean',
-                        required: 'No',
-                        description: 'If <code>true</code>, the app can only be activated if the user is signed in. Defaults to <code>false</code>.'
-                    },
-                    handler: {
-                        type: 'function',
-                        required: 'Yes',
-                        description: 'A function that is called on every input change while the app is active. It returns a list of UI results.',
-                        params: '<code>handler(inputValue, traceApi)</code>',
-                        returns: 'An <code>Array</code> of result objects (<code>app-prompt</code> or <code>app-action</code>).'
-                    },
-                    onEnter: {
-                        type: 'async function',
-                        required: 'Yes',
-                        description: 'An <code>async</code> function that is called when a user selects an <code>app-action</code> result. This is the app\'s core logic.',
-                        params: '<code>async onEnter(payload, traceApi)</code>',
-                        returns: '<code>Promise&lt;void&gt;</code>'
-                    }
-                },
-                traceApi: {
-                    getStashes: {
-                        description: "Retrieves a deep copy of all the user's stashes (bundles).",
-                        returns: "<code>Array&lt;Object&gt;</code> Each object has <code>id</code> and <code>name</code> properties.",
-                        usage: "const allStashes = traceApi.getStashes();"
-                    },
-                    createStash: {
-                        params: "<code>createStash(name)</code>",
-                        description: "Creates a new stash.",
-                        returns: "A <code>Promise</code> that resolves with the newly created stash object.",
-                        usage: "const newStash = await traceApi.createStash(\"My New Stash\");"
-                    },
-                    createClip: {
-                        params: "<code>createClip(clipData)</code>",
-                        description: "Saves a new clip to the database.",
-                        returns: "A <code>Promise</code> that resolves when the clip has been sent to the service worker.",
-                        usage: `const clipData = {\n    text: "My clip content",\n    bundleId: "some-bundle-id",\n    // ... other properties\n};\nawait traceApi.createClip(clipData);`
-                    },
-                    showNotification: {
-                        params: "<code>showNotification(message, type)</code>",
-                        description: "Displays a temporary notification banner at the top of the screen. The <code>type</code> can be 'success', 'error', or 'info'.",
-                        returns: '<code>void</code>',
-                        usage: `traceApi.showNotification("It worked!", "success");`
-                    },
-                    hideSpotlight: {
-                        params: "<code>hideSpotlight()</code>",
-                        description: "Closes the Spotlight Search UI programmatically.",
-                        returns: '<code>void</code>',
-                        usage: 'traceApi.hideSpotlight();'
-                    },
-                    refreshData: {
-                        params: "<code>refreshData()</code>",
-                        description: "Forces Trace to re-fetch all clips and stashes. Essential to call after creating new data like stashes.",
-                        returns: "A <code>Promise</code> that resolves when the data has been refreshed.",
-                        usage: 'await traceApi.refreshData();'
-                    },
-                    escapeHTML: {
-                        params: "<code>escapeHTML(string)</code>",
-                        description: "A utility function to safely escape a string for insertion into HTML.",
-                        returns: "A sanitized <code>string</code>.",
-                        usage: "const safeText = traceApi.escapeHTML(\"&lt;script&gt;alert('oops')&lt;/script&gt;\");"
-                    }
-                }
-            };
+            // --- Copy Button Functionality ---
+            const allCodeContainers = document.querySelectorAll('.code-container, .prose-invert pre');
+            allCodeContainers.forEach(container => {
+                // For containers that are <pre>, the code is inside. For <div>, it's the <pre> child.
+                const pre = container.tagName === 'PRE' ? container : container.querySelector('pre');
+                if (!pre) return;
 
-            const tabButtons = document.querySelectorAll('.tab');
-            const tabContents = {
-                overview: document.getElementById('tab-content-overview'),
-                quickstart: document.getElementById('tab-content-quickstart'),
-                api: document.getElementById('tab-content-api'),
-                examples: document.getElementById('tab-content-examples'),
-            };
+                const code = pre.querySelector('code');
+                if (!code) return;
 
-            const apiListDefinition = document.getElementById('api-list-definition');
-            const apiListTraceApi = document.getElementById('api-list-traceapi');
-            const apiDetailPanel = document.getElementById('api-detail-panel');
+                const button = document.createElement('button');
+                button.className = 'copy-button';
+                button.textContent = 'Copy';
+                pre.appendChild(button);
 
-            function showTab(tabId) {
-                Object.values(tabContents).forEach(content => content.classList.add('hidden'));
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                
-                tabContents[tabId].classList.remove('hidden');
-                document.getElementById(`tab-btn-${tabId}`).classList.add('active');
-            }
-
-            tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    showTab(button.dataset.tab);
+                    const textToCopy = code.innerText;
+                    
+                    // A temporary textarea is used to preserve formatting
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        button.textContent = 'Copied!';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                           button.textContent = 'Copy';
+                           button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                        button.textContent = 'Error';
+                    }
+                    document.body.removeChild(textArea);
                 });
             });
 
-            function populateApiList(listElement, data, type) {
-                Object.keys(data).forEach(key => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<button class="api-list-item w-full text-left p-2 rounded-md font-medium text-slate-600"><code>${key}</code></button>`;
-                    li.querySelector('button').addEventListener('click', () => {
-                        showApiDetail(type, key);
-                        listElement.querySelectorAll('.api-list-item').forEach(item => item.classList.remove('active'));
-                        li.querySelector('button').classList.add('active');
-                        document.getElementById('api-list-traceapi').querySelectorAll('.api-list-item').forEach(item => item.classList.remove('active'));
-
-                    });
-                    listElement.appendChild(li);
+            // --- Active Nav Link Highlighting on Scroll ---
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const navLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                    
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.nav-link.active').forEach(link => link.classList.remove('active'));
+                        if(navLink) navLink.classList.add('active');
+                    }
                 });
-            }
-            
-             function populateTraceApiList(listElement, data, type) {
-                Object.keys(data).forEach(key => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<button class="api-list-item w-full text-left p-2 rounded-md font-medium text-slate-600"><code>${key}()</code></button>`;
-                    li.querySelector('button').addEventListener('click', () => {
-                        showApiDetail(type, key);
-                        listElement.querySelectorAll('.api-list-item').forEach(item => item.classList.remove('active'));
-                         li.querySelector('button').classList.add('active');
-                        document.getElementById('api-list-definition').querySelectorAll('.api-list-item').forEach(item => item.classList.remove('active'));
-                    });
-                    listElement.appendChild(li);
-                });
-            }
+            }, { rootMargin: "-30% 0px -70% 0px" }); // Highlights when section is in the middle 30% of the viewport
 
-
-            function showApiDetail(type, key) {
-                const item = apiData[type][key];
-                let content = `<h3 class="text-xl font-bold text-slate-900 font-mono flex items-center gap-2">${key} ${type === 'traceApi' ? '()' : ''}</h3>`;
-                content += `<p class="mt-2">${item.description}</p>`;
-
-                let details = [];
-                if(item.type) details.push({ label: 'Type', value: `<code>${item.type}</code>` });
-                if(item.required) details.push({ label: 'Required', value: `<span class="font-semibold ${item.required === 'Yes' ? 'text-green-600' : 'text-amber-600'}">${item.required}</span>` });
-                if(item.params) details.push({ label: 'Parameters', value: `<code>${item.params}</code>` });
-                if(item.returns) details.push({ label: 'Returns', value: `${item.returns}` });
-                
-                if (details.length > 0) {
-                     content += `<div class="mt-6 border-t pt-4 space-y-3">`;
-                     details.forEach(detail => {
-                         content += `<div class="grid grid-cols-3 gap-2"><dt class="text-sm font-medium text-slate-500">${detail.label}</dt><dd class="col-span-2 text-sm">${detail.value}</dd></div>`;
-                     });
-                     content += `</div>`;
-                }
-
-                if (item.usage) {
-                    content += `<h4 class="font-semibold text-slate-800 mt-6 mb-2">Usage Example</h4>`;
-                    content += `<pre><button class="copy-btn">Copy</button><code>${item.usage.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
-                }
-                apiDetailPanel.innerHTML = content;
-                setupCopyButtons();
-            }
-
-            function setupCopyButtons() {
-                document.querySelectorAll('.copy-btn').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const pre = button.parentElement;
-                        const code = pre.querySelector('code');
-                        const text = code.innerText;
-
-                        const textArea = document.createElement('textarea');
-                        textArea.value = text;
-                        document.body.appendChild(textArea);
-                        textArea.select();
-                        try {
-                            document.execCommand('copy');
-                            button.innerText = 'Copied!';
-                        } catch (err) {
-                            button.innerText = 'Error';
-                            console.error('Failed to copy text: ', err);
-                        }
-                        document.body.removeChild(textArea);
-                        setTimeout(() => {
-                            button.innerText = 'Copy';
-                        }, 2000);
-                    });
-                });
-            }
-
-            populateApiList(apiListDefinition, apiData.definition, 'definition');
-            populateTraceApiList(apiListTraceApi, apiData.traceApi, 'traceApi');
-            setupCopyButtons();
+            document.querySelectorAll('section[id]').forEach((section) => {
+                sectionObserver.observe(section);
+            });
         });
     </script>
-
 </body>
 </html>
