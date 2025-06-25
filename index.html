@@ -3,421 +3,505 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trace - Your Mind's Search Bar</title>
-
-    <!-- Tailwind CSS -->
+    <title>Trace - Your second brain, instantly accessible.</title>
+    
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    
     <style>
-        /* Custom styles for a premium feel based on Trace UI */
+        /* Custom styles for a premium, Apple-like aesthetic */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* A very light gray, almost white */
-            color: #111827; /* Darker text for better contrast */
+            background-color: #f5f5f7; /* Apple's light grey background */
+            color: #1d1d1f;
         }
 
-        /* Animation for fade-in on scroll */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
         }
 
-        .fade-in-section {
-            animation: fadeIn 0.8s ease-out forwards;
+        .kbd-key {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4b5563;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 0 #d1d5db;
         }
         
-        /* Blinking cursor for mockups */
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        .blinking-cursor {
-            animation: blink 1s step-start infinite;
+        /* General Mockup Container Style */
+        .mockup-container {
+            background-color: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.07);
+            border: 1px solid #e5e5e5;
+            padding: 1.5rem;
+            transform: perspective(1500px) rotateY(-10deg) rotateX(5deg);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* Subtle gradient for hero background */
-        .hero-gradient {
-            background: radial-gradient(circle at 50% 0%, #EFF6FF, rgba(249, 250, 251, 0) 50%);
+        .feature-row:hover .mockup-container {
+             transform: perspective(1500px) rotateY(0deg) rotateX(0deg);
         }
-        
-        .mockup-shadow {
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08), 0px 0px 2px rgba(0, 0, 0, 0.06);
+
+        /* Mockup 1: Capture */
+        .mock-selection-text {
+            background-color: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            color: #374151;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
         }
+        .mock-selection-text .highlight {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-radius: 2px;
+        }
+        .mock-selection-tooltip {
+            position: absolute;
+            opacity: 0;
+            top: -25px;
+            right: 20px;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 240px;
+            padding: 1rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 10;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .mock-selection-text:hover .mock-selection-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .mark-it-button {
+            transition: all 0.2s ease;
+        }
+
+        /* Mockup 2 & 3: Recall & Note Palette */
+        .mock-search-palette {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            overflow: hidden;
+            height: 340px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+        }
+        .mock-search-tags-container {
+            padding: 0.75rem 0.75rem 0.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            min-height: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .tag-pill span {
+             margin-right: 0.375rem;
+        }
+        .tag-pill-blue { background-color: #dbeafe; color: #1e3a8a; }
+        .tag-pill-green { background-color: #dcfce7; color: #166534; }
         
-        .feature-card:hover .feature-icon-container {
-            transform: scale(1.1);
-            background-color: #3B82F6; /* Using the new primary blue */
+        .mock-search-input-wrapper {
+            position: relative;
+        }
+        .mock-search-input {
+            width: 100%;
+            border: none;
+            padding: 1rem 1.25rem; /* Increased padding */
+            font-size: 1.125rem;
+            outline: none;
+            color: #1d1d1f;
+            background: transparent;
+        }
+        .mock-search-results {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .mock-search-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem; /* Increased padding */
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        .mock-search-item.active {
+            background-color: #3b82f6;
             color: white;
         }
-
-        /* Primary button style matching Trace UI */
-        .btn-primary {
-            background-color: #2563EB; /* A strong, vibrant blue */
+        .note-creation-view {
+            padding: 1rem;
+        }
+        .note-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background-color: #dcfce7; 
+            color: #166534;
+        }
+        .create-note-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            border-radius: 0.75rem;
+            background-color: #3b82f6;
             color: white;
+            font-weight: 500;
         }
-        .btn-primary:hover {
-            background-color: #1D4ED8;
-        }
+        
     </style>
 </head>
 <body class="antialiased">
-
-    <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-b border-gray-200/80 z-50">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <!-- Accurate Trace Logo -->
-                    <div class="w-8 h-8 flex items-center justify-center">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="6" width="4" height="12" rx="1" fill="#3B82F6"/>
-                            <rect x="14" y="6" width="4" height="12" rx="1" fill="#93C5FD"/>
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold text-gray-800">Trace</span>
+    <!-- Navigation -->
+    <nav class="bg-f5f5f7/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-20 border-b border-gray-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-2xl font-bold tracking-tight">Trace</a>
+                    <span class="bg-gray-200 text-gray-600 text-xs font-semibold px-2.5 py-1 rounded-full">v1.5.1 (Beta)</span>
                 </div>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
-                    <a href="#workflow" class="text-gray-600 hover:text-blue-600 transition-colors">Workflow</a>
-                    <a href="#apps" class="text-gray-600 hover:text-blue-600 transition-colors">Apps</a>
-                </nav>
-                <a href="https://chromewebstore.google.com/detail/trace-the-reflexive-memor/pneglobfpkphejhhblngfinbfddjphao" class="btn-primary px-5 py-2 rounded-lg font-semibold transition-all shadow-sm hover:shadow-md">
-                    Add to Chrome <span class="hidden sm:inline">- It's Free</span>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-blue-600">Features</a>
+                </div>
+                <div>
+                    <a href="https://chromewebstore.google.com/detail/trace-the-reflexive-memor/pneglobfpkphejhhblngfinbfddjphao" class="inline-block bg-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-lg shadow-md hover:bg-blue-700 transition-colors">
+                        Get Trace for Chrome
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Header Section -->
+    <header class="text-center pt-32 pb-20 md:pt-48 md:pb-32 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
+                Your second brain,
+            </h1>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight gradient-text">
+                instantly accessible.
+            </h1>
+            <p class="max-w-2xl mx-auto mt-8 text-lg md:text-xl text-gray-500">
+                Stop losing thoughts and breaking your flow. Trace is the effortless way to capture, find, and reuse information from the web.
+            </p>
+            <div class="mt-10">
+                <a href="https://chromewebstore.google.com/detail/trace-the-reflexive-memor/pneglobfpkphejhhblngfinbfddjphao" class="inline-block bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
+                    Add to Chrome — It's Free
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="pt-32 pb-20 md:pt-40 md:pb-28 text-center relative hero-gradient">
-            <div class="container mx-auto px-6">
-                <span class="inline-block bg-blue-100 text-blue-700 text-sm font-semibold px-4 py-1 rounded-full mb-4">
-                    Your Mind's Search Bar
-                </span>
-                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-                    Capture Everything. <br class="hidden md:block" /> Lose Nothing.
-                </h1>
-                <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-10">
-                    Trace is a frictionless clipboard that saves your work with full context, so you can find any idea, link, or snippet instantly.
-                </p>
-                <div class="flex justify-center items-center space-x-4 mb-12">
-                    <a href="https://chromewebstore.google.com/detail/trace-the-reflexive-memor/pneglobfpkphejhhblngfinbfddjphao" class="btn-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        Get Trace for Chrome
-                    </a>
+    <!-- Main Features Section -->
+    <main id="features" class="space-y-24 md:space-y-32 pb-24 md:pb-32">
+        
+        <!-- Feature 1: Capture -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">1. Capture without context switching.</h2>
+                    <p class="text-lg text-gray-600">Highlight any text on the web and save it with a single click. Trace automatically remembers the source, so you can stay in your flow.</p>
                 </div>
-
-                <!-- NEW: Accurate Animated Spotlight Search Mockup -->
-                <div id="spotlight-mockup" class="max-w-3xl mx-auto mt-16 p-1.5 bg-white rounded-2xl mockup-shadow border border-gray-200/80">
-                    <div class="bg-gray-50/50 rounded-xl p-2">
-                        <!-- Search Input -->
-                        <div class="flex items-center space-x-3 border-b border-gray-200 pb-2 mb-2 px-2">
-                             <svg class="w-5 h-5 text-gray-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            <p id="search-input" class="text-gray-800 text-base w-full text-left"></p>
-                            <span class="blinking-cursor bg-blue-500 w-0.5 h-5"></span>
+                <div class="md:w-1/2 w-full">
+                    <div class="mockup-container">
+                        <div class="mock-selection-text">
+                            ...true innovation requires a shift in perspective. You must not only solve the problem, but <span class="highlight">invent the future.</span> This single sentence captures the spirit...
+                            <div class="mock-selection-tooltip">
+                                <p class="font-bold text-gray-800 mb-3">Save to a Stash</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center space-x-3 bg-gray-100 p-2 rounded-lg cursor-pointer"><span>💬</span><span class="text-sm font-medium text-gray-800">Quotes</span></div>
+                                    <div class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer"><span>💌</span><span class="text-sm font-medium text-gray-600">Email Snippets</span></div>
+                                </div>
+                                <button id="mark-it-btn-feature" class="mark-it-button w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-lg mt-4">Mark it</button>
+                            </div>
                         </div>
-                        <!-- Search Results -->
-                        <div id="search-results" class="space-y-1">
-                            <!-- JS will populate this -->
-                        </div>
-                        <!-- Footer hint -->
-                         <div class="text-xs text-gray-400 text-center pt-2 mt-1 border-t border-gray-200">
-                             Use <span class="font-semibold bg-gray-200 text-gray-600 rounded px-1 py-0.5">↑</span> <span class="font-semibold bg-gray-200 text-gray-600 rounded px-1 py-0.5">↓</span> arrow keys to navigate
-                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section id="features" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">A Magical Layer for Your Workflow</h2>
-                    <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-600">Trace isn't just a clipboard. It's an entire system for managing information without breaking your focus.</p>
+        <!-- Feature 2: Recall -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">2. Find anything, instantly.</h2>
+                    <p class="text-lg text-gray-600">Bring up a powerful search palette with a shortcut. Instantly find what you need with keywords, or use tags to filter your results.</p>
                 </div>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Feature 1: Continuous Capture -->
-                    <div class="feature-card bg-gray-50 p-8 rounded-2xl border border-gray-200/80 transition-all hover:shadow-xl hover:-translate-y-1">
-                         <div class="feature-icon-container bg-white w-12 h-12 rounded-lg flex items-center justify-center text-blue-600 shadow-sm mb-5 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Continuous Capture</h3>
-                        <p class="text-gray-600">Copy text, links, and images in succession. Trace remembers everything, ready for when you need it.</p>
-                    </div>
-
-                    <!-- Feature 2: Stashes & Tags -->
-                    <div class="feature-card bg-gray-50 p-8 rounded-2xl border border-gray-200/80 transition-all hover:shadow-xl hover:-translate-y-1">
-                        <div class="feature-icon-container bg-white w-12 h-12 rounded-lg flex items-center justify-center text-blue-600 shadow-sm mb-5 transition-all">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Contextual Organization</h3>
-                        <p class="text-gray-600">Group clips into "Stashes" and add tags. Your knowledge, perfectly organized for future retrieval.</p>
-                    </div>
-
-                    <!-- Feature 3: Frictionless Search -->
-                    <div class="feature-card bg-gray-50 p-8 rounded-2xl border border-gray-200/80 transition-all hover:shadow-xl hover:-translate-y-1">
-                        <div class="feature-icon-container bg-white w-12 h-12 rounded-lg flex items-center justify-center text-blue-600 shadow-sm mb-5 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Frictionless Search</h3>
-                        <p class="text-gray-600">A quick keyboard shortcut brings up an instant, searchable overlay. Find anything in seconds.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- NEW: Accurate Workflow Section with Shelf Mockup -->
-        <section id="workflow" class="py-20">
-            <div class="container mx-auto px-6">
-                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Copy Ten Things. Paste Once.</h2>
-                    <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-600">Use the Shelf to compile research, collect quotes, or build documents in a fraction of the time.</p>
-                </div>
-
-                <div class="max-w-4xl mx-auto bg-white rounded-2xl mockup-shadow border border-gray-200/80 overflow-hidden p-2">
-                    <div class="bg-gray-50/50 rounded-xl p-2">
-                        <!-- Search Area -->
-                        <div class="px-2">
-                            <div class="flex items-center space-x-2">
-                               <span class="text-xs font-medium bg-blue-600 text-white px-2 py-1 rounded-md flex items-center">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5"><path d="M15.042 21.672L13.684 16.6m0 0l-2.5-2.5m2.5 2.5l5.507 5.507M13.684 16.6l5.507 5.507M5.28 18.719l-1.44-1.44a1.5 1.5 0 010-2.121l6.879-6.879a1.5 1.5 0 012.121 0l1.44 1.44a1.5 1.5 0 010 2.121l-6.879 6.879a1.5 1.5 0 01-2.121 0z"></path></svg>
-                                   Quotes
-                               </span>
-                               <span class="text-xs font-medium bg-green-600 text-white px-2 py-1 rounded-md">Charlie Munger</span>
+                <div class="md:w-1/2 w-full">
+                     <div class="mockup-container">
+                        <div id="recall-mockup" class="mock-search-palette">
+                            <div id="recall-tags" class="mock-search-tags-container">
+                                <!-- Tags will be added here by JS -->
+                            </div>
+                            <div class="mock-search-input-wrapper border-b border-gray-200/80">
+                                <input type="text" id="recall-input" class="mock-search-input" placeholder="Type to search or add a tag...">
+                            </div>
+                            <div id="recall-results" class="mock-search-results">
+                               <!-- JS will populate this -->
+                            </div>
+                            <div class="text-center p-2 text-xs text-gray-400 border-t border-gray-200/80">
+                                Press <kbd class="kbd-key">Shift</kbd>+<kbd class="kbd-key">Enter</kbd> for details
                             </div>
                         </div>
-
-                        <!-- Results -->
-                        <div class="p-2 space-y-1">
-                            <div class="bg-blue-600 text-white p-3 rounded-lg flex items-start space-x-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                                <div>
-                                    <p class="font-medium">In my whole life, I have known no wise people (over a broad subject matter ar...</p>
-                                    <p class="text-sm text-blue-200">Quotes • 3h ago</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- The Shelf -->
-                        <div class="mt-2 border-t-2 border-dashed border-gray-200 p-2">
-                             <div class="flex items-center justify-between mb-2">
-                                <h4 class="text-sm font-bold text-gray-700">Shelf</h4>
-                                <div class="flex items-center space-x-2">
-                                    <button class="text-xs font-medium text-gray-500 hover:text-gray-800">Clear</button>
-                                    <button class="btn-primary text-xs font-semibold px-3 py-1 rounded-md">Copy All</button>
-                                </div>
-                             </div>
-                             <div class="flex space-x-2 overflow-x-auto pb-2">
-                                <!-- Shelf Item 1 -->
-                                <div class="bg-white p-2 rounded-lg shadow-sm border w-40 flex-shrink-0">
-                                    <p class="text-xs font-medium truncate text-gray-800">Quotes from the...</p>
-                                    <span class="text-xs text-gray-500">2 items</span>
-                                </div>
-                                 <!-- Shelf Item 2 -->
-                                <div class="bg-white p-2 rounded-lg shadow-sm border w-40 flex-shrink-0">
-                                    <p class="text-xs font-medium truncate text-gray-800">User Testimonials</p>
-                                    <span class="text-xs text-gray-500">5 items</span>
-                                </div>
-                                <!-- Shelf Item 3 -->
-                                <div class="bg-white p-2 rounded-lg shadow-sm border w-40 flex-shrink-0">
-                                    <p class="text-xs font-medium truncate text-gray-800">"The older I get the m..."</p>
-                                    <span class="text-xs text-gray-500">1 clip</span>
-                                </div>
-                             </div>
-                        </div>
-                    </div>
+                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Inline Apps Section -->
-        <section id="apps" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">More Than a Clipboard</h2>
-                    <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-600">Use inline "Apps" to perform quick actions without leaving your keyboard.</p>
+        <!-- Feature 3: Quick Notes -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">3. Jot down fleeting thoughts.</h2>
+                    <p class="text-lg text-gray-600">A thought strikes. Don't let it fade. Type <code class="bg-gray-200 text-gray-700 p-1 rounded-md font-mono">;note</code> to instantly capture ideas and thoughts without leaving your keyboard.</p>
                 </div>
-                
-                <div class="max-w-2xl mx-auto bg-white rounded-2xl mockup-shadow border border-gray-200/80 p-2">
-                    <div class="bg-gray-50/50 rounded-xl p-4">
-                        <div class="flex items-center space-x-3">
-                            <span class="font-mono text-sm bg-green-100 text-green-700 px-2 py-0.5 rounded-md flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                                notes
-                            </span>
-                            <p class="text-gray-700 text-lg">Ideas need a home. Notes are here.</p>
-                        </div>
-                        <div class="mt-4 p-3 bg-blue-600 rounded-lg text-white text-base">
-                            <span class="font-medium">Create a new note:</span> "Ideas need a home. Notes are here."
+                <div class="md:w-1/2 w-full">
+                    <div class="mockup-container">
+                        <div id="note-mockup" class="mock-search-palette">
+                             <div class="mock-search-input-wrapper border-b border-gray-200/80">
+                                <input type="text" id="note-input" class="mock-search-input" placeholder=";note your brilliant idea...">
+                            </div>
+                            <div id="note-results" class="mock-search-results p-4">
+                               <div class="text-center text-gray-400 pt-12">
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                   <p class="mt-2 text-sm">Start typing with <code class="bg-gray-200 text-gray-700 p-1 rounded-md font-mono">;note</code></p>
+                               </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA Section -->
-        <section class="py-20">
-            <div class="container mx-auto px-6 text-center">
-                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Revolutionize Your Workflow</h2>
-                 <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-600 mb-10">
-                    Get started for free. Experience a seamless, intelligent way to manage knowledge and never lose context again.
-                </p>
-                 <a href="https://chromewebstore.google.com/detail/trace-the-reflexive-memor/pneglobfpkphejhhblngfinbfddjphao" class="btn-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                    Download for Chrome
-                </a>
-                <p class="mt-4 text-sm text-gray-500">Free forever. Powerful features for everyone.</p>
+        <!-- Feature 4: Reuse -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">4. Reuse effortlessly.</h2>
+                    <p class="text-lg text-gray-600">Paste your clips and notes anywhere. Snippets appear with original formatting and a source link, maintaining context and saving you time.</p>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <div class="mockup-container">
+                        <div class="mock-gmail">
+                            <div class="text-sm text-gray-500">
+                                <p>To: team@acme.com</p>
+                                <p>Subject: Interesting find for the project</p>
+                            </div>
+                            <div class="border-t my-3"></div>
+                            <p class="mb-4">Hi Team,</p>
+                            <p class="mb-4">Found a great quote for our presentation:</p>
+                            <blockquote class="pl-4 border-l-4 border-gray-200 text-gray-700 bg-gray-50 p-3 rounded-r-lg">
+                                "The best way to predict the future is to invent it." — <a href="#" class="text-blue-600 underline">Alan Kay on Innovation | Matter</a>
+                            </blockquote>
+                            <div class="h-10"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200">
-        <div class="container mx-auto px-6 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <div class="w-7 h-7 flex items-center justify-center">
-                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="6" width="4" height="12" rx="1" fill="#374151"/>
-                            <rect x="14" y="6" width="4" height="12" rx="1" fill="#9CA3AF"/>
-                        </svg>
-                    </div>
-                    <span class="text-lg font-bold text-gray-800">Trace</span>
-                </div>
-                <div class="text-sm text-gray-600 mb-4 md:mb-0">
-                    &copy; 2025 Trace. All Rights Reserved.
-                </div>
-                <div class="flex space-x-6 text-gray-500">
-<!--                     <a href="#" class="hover:text-gray-900">Twitter</a> -->
-                    <a href="/privacy-policy" class="hover:text-gray-900">Privacy</a>
-                    <a href="mailto:shreyanshpandey@protonmail.com" class="hover:text-gray-900">Contact</a>
-                </div>
-            </div>
+    <footer class="bg-gray-900 text-white text-center py-20">
+        <h2 class="text-3xl font-bold mb-4">Ready to upgrade your workflow?</h2>
+        <p class="text-gray-400 mb-8 max-w-md mx-auto">Get started in seconds. It's free and in active development.</p>
+        <a href="https://chromewebstore.google.com/detail/trace-the-reflexive-memor/pneglobfpkphejhhblngfinbfddjphao" class="inline-block bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
+            Get Trace for Chrome
+        </a>
+        <div class="mt-16 text-gray-500 text-sm">
+            &copy; 2024 Trace v1.5.1
         </div>
     </footer>
 
     <script>
-        // --- Animated Spotlight Search Mockup Script ---
         document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('search-input');
-            const searchResultsContainer = document.getElementById('search-results');
-            if (!searchInput || !searchResultsContainer) return;
 
-            const placeholderText = "learning";
-
-            const resultsData = [
-                { type: 'clip', title: 'Learning is the act of incorporating new facts...', stash: 'Definitions', active: true },
-                { type: 'stash', title: 'Reading & Learning', items: 4 },
-                { type: 'clip', title: 'Another reason we\'re bad at learning is that...', stash: 'Caution' },
-                { type: 'stash', title: 'Definitions', items: 2 },
-            ];
-
-            // Function to simulate typing
-            function typeEffect(element, text, callback) {
-                let i = 0;
-                element.innerHTML = "";
-                const interval = setInterval(() => {
-                    if (i < text.length) {
-                        element.innerHTML += text.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(interval);
-                        if (callback) callback();
-                    }
-                }, 100);
+            // Reusable function for the "Mark It" button animation
+            function animateMarkItButton(button) {
+                if (button.dataset.clicked) return;
+                button.dataset.clicked = true;
+                button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                button.classList.add('bg-green-500');
+                button.textContent = 'Saved!';
+                setTimeout(() => {
+                    button.classList.remove('bg-green-500');
+                    button.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                    button.textContent = 'Mark it';
+                    delete button.dataset.clicked;
+                }, 1500);
             }
 
-            // Function to render search results
-            function showResults() {
-                searchResultsContainer.innerHTML = ''; // Clear previous results
-                resultsData.forEach(item => {
-                    const resultEl = document.createElement('div');
-                    resultEl.className = `p-2.5 rounded-lg flex items-start justify-between transition-all text-left ${item.active ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`;
+            // --- Mockup 1: Interactive Capture ---
+            const featureMarkItBtn = document.getElementById('mark-it-btn-feature');
+            featureMarkItBtn.addEventListener('click', () => animateMarkItButton(featureMarkItBtn));
+
+
+            // --- Mockup 2: Interactive Recall/Search Palette ---
+            const recallMockup = {
+                input: document.getElementById('recall-input'),
+                resultsContainer: document.getElementById('recall-results'),
+                tagsContainer: document.getElementById('recall-tags'),
+                allData: [
+                    { id: 1, title: 'The best way to predict the future is to invent it.', stash: 'Quotes', icon: '💡', tags: ['alan kay', 'innovation'] },
+                    { id: 2, title: 'In my whole life, I have known no wise people who didn\'t read all the time.', stash: 'Quotes', icon: '💬', tags: ['charlie munger', 'reading'] },
+                    { id: 3, title: 'Venture capital is a tail-driven business.', stash: 'Collaborative Fund', icon: '📈', tags: ['finance', 'investing'] },
+                    { id: 4, title: 'Presentation design ideas for Q3', stash: 'Project Ideas', icon: '🚀', tags: ['design', 'q3'] },
+                ],
+                activeTags: [],
+                activeIndex: 0,
+
+                init() {
+                    this.input.addEventListener('input', () => this.render());
+                    this.input.addEventListener('keydown', (e) => this.handleKeydown(e));
+                    this.render();
+                },
+                
+                render() {
+                    // Render tags
+                    this.tagsContainer.innerHTML = '';
+                    this.activeTags.forEach((tag, index) => {
+                        const pill = document.createElement('div');
+                        pill.className = `tag-pill ${index % 2 === 0 ? 'tag-pill-blue' : 'tag-pill-green'}`;
+                        pill.innerHTML = `<span>${tag}</span><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
+                        pill.onclick = () => {
+                            this.activeTags.splice(index, 1);
+                            this.render();
+                        };
+                        this.tagsContainer.appendChild(pill);
+                    });
+
+                    // Filter data
+                    const query = this.input.value.toLowerCase();
+                    const filteredData = this.allData.filter(item => {
+                        const matchesQuery = query ? item.title.toLowerCase().includes(query) : true;
+                        const matchesTags = this.activeTags.every(tag => item.tags.includes(tag));
+                        return matchesQuery && matchesTags;
+                    });
                     
-                    let icon = '';
-                    if(item.type === 'clip') {
-                        // Document icon
-                        icon = `<svg class="w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${item.active ? 'text-white' : 'text-gray-400'}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>`;
-                    } else {
-                        // Folder icon
-                        icon = `<svg class="w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${item.active ? 'text-white' : 'text-yellow-400'}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
+                    // Render results
+                    this.resultsContainer.innerHTML = '';
+                    if (filteredData.length === 0) {
+                        this.resultsContainer.innerHTML = `<div class="p-8 text-gray-500 text-sm text-center">No results found.</div>`;
+                        return;
+                    }
+                    
+                    filteredData.forEach((item, index) => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'mock-search-item';
+                        if (index === this.activeIndex) {
+                            itemEl.classList.add('active');
+                        }
+                        itemEl.innerHTML = `
+                            <div class="mr-4 text-xl">${item.icon}</div>
+                            <div class="flex-grow">
+                                <div class="font-semibold">${item.title}</div>
+                                <div class="text-sm ${index === this.activeIndex ? 'text-blue-200' : 'text-gray-500'}">in ${item.stash}</div>
+                            </div>
+                        `;
+                        this.resultsContainer.appendChild(itemEl);
+                    });
+                },
+
+                handleKeydown(e) {
+                    if (e.key === 'Tab' && this.input.value.trim() !== '') {
+                        e.preventDefault();
+                        const newTag = this.input.value.trim().toLowerCase();
+                        if (!this.activeTags.includes(newTag)) this.activeTags.push(newTag);
+                        this.input.value = '';
+                        this.render();
+                        return;
                     }
 
-                    const titleClass = `font-medium truncate ${item.active ? '' : 'text-gray-800'}`;
-                    const metaClass = `text-sm ${item.active ? 'text-blue-200' : 'text-gray-500'}`;
+                    if (e.key === 'Backspace' && this.input.value === '' && this.activeTags.length > 0) {
+                        this.activeTags.pop();
+                        this.render();
+                        return;
+                    }
 
-                    resultEl.innerHTML = `
-                        <div class="flex items-start truncate">
-                           ${icon}
-                           <div>
-                               <p class="${titleClass}">${item.title}</p>
-                               <p class="${metaClass}">${item.type === 'clip' ? item.stash : `${item.items} items • Stash`}</p>
-                           </div>
+                    const items = this.resultsContainer.querySelectorAll('.mock-search-item');
+                    if (items.length === 0) return;
+
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        this.activeIndex = (this.activeIndex + 1) % items.length;
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        this.activeIndex = (this.activeIndex - 1 + items.length) % items.length;
+                    }
+                     this.render();
+                }
+            };
+            
+            recallMockup.init();
+
+            // --- Mockup 3: Quick Note ---
+            const noteInput = document.getElementById('note-input');
+            const noteResults = document.getElementById('note-results');
+            
+            noteInput.addEventListener('input', () => {
+                const text = noteInput.value;
+                if (text.startsWith(';note ')) {
+                    const noteContent = text.substring(6);
+                    noteResults.innerHTML = `
+                        <div class="text-left">
+                            <div class="note-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                                Note
+                            </div>
+                            <div class="create-note-item">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                               <span>Create a new note: "${noteContent}"</span>
+                            </div>
                         </div>
                     `;
-                    resultEl.style.opacity = '0';
-                    resultEl.style.transform = 'translateY(10px)';
-                    searchResultsContainer.appendChild(resultEl);
-                });
-                
-                // Animate results appearing
-                Array.from(searchResultsContainer.children).forEach((child, index) => {
-                    setTimeout(() => {
-                        child.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        child.style.opacity = '1';
-                        child.style.transform = 'translateY(0)';
-                    }, index * 80);
-                });
-            }
-
-            // Start the animation
-            setTimeout(() => {
-                typeEffect(searchInput, placeholderText, showResults);
-            }, 1000);
-            
-        });
-
-        // --- Fade-in on Scroll Observer ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('main > section, footer');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in-section');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
+                } else {
+                    noteResults.innerHTML = `
+                       <div class="text-center text-gray-400 pt-12">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                           <p class="mt-2 text-sm">Start typing with <code class="bg-gray-200 text-gray-700 p-1 rounded-md font-mono">;note</code></p>
+                       </div>
+                    `;
+                }
             });
-
-            sections.forEach(section => {
-                section.style.opacity = '0';
-                observer.observe(section);
-            });
-
-            // The hero section should be visible immediately
-             const heroSection = document.querySelector('main > section');
-            if (heroSection) {
-                 heroSection.style.opacity = '1';
-                 heroSection.classList.add('fade-in-section');
-                 observer.unobserve(heroSection);
-            }
         });
     </script>
-
 </body>
 </html>
