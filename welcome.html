@@ -3,222 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ;;Trace</title>
+    <title>Welcome to Reflex</title>
+    
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
+        /* Custom styles for a premium, Apple-like aesthetic */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* Light Gray */
-            color: #111827; /* Dark Gray */
+            background-color: #f5f5f7; /* Apple's light grey background */
+            color: #1d1d1f;
         }
-        .laptop-screen {
-            background-color: #F9FAFB;
-            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-            background-size: 25px 25px;
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .kbd-key {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4b5563;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 0 #d1d5db;
+        }
+        
+        /* General Mockup Container Style */
+        .mockup-container {
+            background-color: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.07);
+            border: 1px solid #e5e5e5;
+            padding: 1.5rem;
+            transform: perspective(1500px) rotateY(-10deg) rotateX(5deg);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .feature-row:hover .mockup-container {
+             transform: perspective(1500px) rotateY(0deg) rotateX(0deg);
+        }
+
+        /* Mockup 1: Capture */
+        .mock-selection-text {
+            background-color: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            color: #374151;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+        }
+        .mock-selection-text .highlight {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-radius: 2px;
+        }
+        .mock-selection-tooltip {
+            position: absolute;
+            opacity: 0;
+            top: -25px;
+            right: 20px;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 240px;
             padding: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 10;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
         }
-        /* Animation Styles */
-        .palette-item { 
-            transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.2s ease;
-            max-height: 100px;
+        .mock-selection-text:hover .mock-selection-tooltip {
             opacity: 1;
-            transform: scaleY(1);
-            transform-origin: top;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .mark-it-button {
+            transition: all 0.2s ease;
+        }
+
+        /* Mockup 2: Recall */
+        .mock-search-palette {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            overflow: hidden;
+            height: 340px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+        }
+        .mock-search-tags-container {
+            padding: 0.75rem 0.75rem 0.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            min-height: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .tag-pill span {
+             margin-right: 0.375rem;
+        }
+        .tag-pill-blue { background-color: #dbeafe; color: #1e3a8a; }
+        .tag-pill-green { background-color: #dcfce7; color: #166534; }
+        
+        .mock-search-input-wrapper {
+            position: relative;
+        }
+        .mock-search-input {
+            width: 100%;
+            border: none;
+            padding: 1rem 1.25rem; /* Increased padding */
+            font-size: 1.125rem;
+            outline: none;
+            color: #1d1d1f;
+            background: transparent;
+        }
+        .mock-search-results {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .mock-search-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem; /* Increased padding */
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        .mock-search-item.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        /* Detailed View Mockup */
+        .mock-detailed-view {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid #e5e7eb;
             overflow: hidden;
         }
-        .palette-item.hidden {
-            opacity: 0;
-            max-height: 0;
-            transform: scaleY(0);
-        }
-        .palette-item.selected { 
-            background-color: rgba(59, 130, 246, 0.1); /* Lighter blue highlight */
-        }
-        .blinking-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1em;
-            background-color: #6D28D9;
-            animation: blink 1s step-end infinite;
-            vertical-align: text-bottom;
-            margin-left: 2px;
-        }
-        @keyframes blink {
-            from, to { opacity: 1 }
-            50% { opacity: 0 }
+        
+        /* Reuse Mockup */
+        .mock-gmail {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            border: 1px solid #e5e7eb;
+            color: #374151;
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <main class="min-h-screen w-full flex items-center justify-center p-4 md:p-8">
-        <div class="max-w-5xl w-full">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">Welcome to Trace.</h1>
-                <p class="mt-3 text-lg text-gray-600">Your reflexive memory engine is now active.</p>
+    <!-- Header Section -->
+    <header class="text-center py-20 md:py-32 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-block bg-blue-100 text-blue-600 font-semibold px-4 py-1 rounded-full text-sm mb-6">
+                Welcome to Reflex
             </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
+                Your second brain,
+            </h1>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight gradient-text">
+                instantly accessible.
+            </h1>
+            <p class="max-w-2xl mx-auto mt-8 text-lg md:text-xl text-gray-500">
+                Reflex seamlessly integrates with your workflow, allowing you to capture, find, and reuse knowledge without ever breaking your flow.
+            </p>
+        </div>
+    </header>
 
-            <div class="mt-12 md:mt-16 grid md:grid-cols-2 gap-x-16 gap-y-12 items-center">
-                <div class="md:order-2">
-                    <h2 class="text-2xl font-semibold text-gray-900 mb-6">How It Works</h2>
-                    <ol class="space-y-6">
-                        <li class="flex">
-                             <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-900 text-white rounded-full font-bold text-sm mr-4 mt-1">1</div>
-                             <div>
-                                <h3 class="font-semibold text-gray-900">Mark & Stash</h3>
-                                <p class="text-gray-600">Select text and press <kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd> to save it.</p>
-                             </div>
-                        </li>
-                         <li class="flex">
-                             <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-900 text-white rounded-full font-bold text-sm mr-4 mt-1">2</div>
-                             <div>
-                                <h3 class="font-semibold text-gray-900">Recall Instantly</h3>
-                                <p class="text-gray-600">In any text field, type <code class="bg-gray-100 text-gray-800 rounded-md px-2 py-1 font-mono text-sm">;;</code> to search and paste from your memory.</p>
-                             </div>
-                        </li>
-                         <li class="flex">
-                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-900 text-white rounded-full font-bold text-sm mr-4 mt-1">3</div>
-                             <div>
-                                <h3 class="font-semibold text-gray-900">Manage</h3>
-                                <p class="text-gray-600">Press <kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Ctrl+Shift+X</kbd> to open the main view. Navigate with arrow keys, press <kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Enter</kbd> to copy, or <kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Shift+Enter</kbd> to view inside a stash.</p>
-                             </div>
-                        </li>
-                    </ol>
-                     <div class="mt-8">
-                        <a href="https://theprismlabs.github.io/trace/" target="_blank" class="text-blue-600 font-medium hover:underline">Learn more</a>
-                        <span class="mx-2 text-gray-400">&bull;</span>
-                        <a href="https://theprismlabs.github.io/trace/privacy-policy" target="_blank" class="text-blue-600 font-medium hover:underline">Privacy Policy</a>
-                    </div>
+    <!-- Main Features Section -->
+    <main class="space-y-24 md:space-y-32 pb-24 md:pb-32">
+        
+        <!-- Feature 1: Capture -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">1. Capture with a Click</h2>
+                    <p class="text-lg text-gray-600">Highlight any text on the web and instantly save it to a stash. Reflex remembers the context, so you don't have to.</p>
                 </div>
-                <div class="md:order-1">
-                    <!-- Laptop Frame -->
-                    <div class="relative mx-auto border-gray-300 bg-gray-300 border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]">
-                        <div class="rounded-lg overflow-hidden h-[156px] md:h-[278px] laptop-screen">
-                             <div id="animation-container" class="w-full h-full">
-                                <!-- JS will populate this -->
-                             </div>
+                <div class="md:w-1/2 w-full">
+                    <div class="mockup-container">
+                        <div class="mock-selection-text">
+                            ...true innovation requires a shift in perspective. You must not only solve the problem, but <span class="highlight">invent the future.</span> This single sentence captures the spirit...
+                            <div class="mock-selection-tooltip">
+                                <p class="font-bold text-gray-800 mb-3">Save to a Stash</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center space-x-3 bg-gray-100 p-2 rounded-lg cursor-pointer"><span>💬</span><span class="text-sm font-medium text-gray-800">Quotes</span></div>
+                                    <div class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer"><span>💌</span><span class="text-sm font-medium text-gray-600">Email Snippets</span></div>
+                                </div>
+                                <button id="mark-it-btn-feature" class="mark-it-button w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-lg mt-4">Mark it</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="relative mx-auto bg-gray-200 rounded-b-xl h-[17px] max-w-[351px] md:h-[21px] md:max-w-[597px]">
-                        <div class="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[4px] md:w-[96px] md:h-[8px] bg-gray-300"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 2: Recall -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">2. Recall with Precision</h2>
+                    <p class="text-lg text-gray-600">Bring up a powerful search palette with a shortcut. Instantly find what you need with keywords, or use tags to filter your results.</p>
+                </div>
+                <div class="md:w-1/2 w-full">
+                     <div class="mockup-container">
+                        <div id="recall-mockup" class="mock-search-palette">
+                            <div id="recall-tags" class="mock-search-tags-container">
+                                <!-- Tags will be added here by JS -->
+                            </div>
+                            <div class="mock-search-input-wrapper border-b border-gray-200/80">
+                                <input type="text" id="recall-input" class="mock-search-input" placeholder="Type to search or add a tag...">
+                            </div>
+                            <div id="recall-results" class="mock-search-results">
+                               <!-- JS will populate this -->
+                            </div>
+                            <div class="text-center p-2 text-xs text-gray-400 border-t border-gray-200/80">
+                                Press <kbd class="kbd-key">Shift</kbd>+<kbd class="kbd-key">Enter</kbd> for details
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature 3: Detailed View -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">3. Review in Detail</h2>
+                    <p class="text-lg text-gray-600">Need the bigger picture? Open a detailed view to see the full clip, copy with or without formatting, and jump directly to the source URL.</p>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <div class="mockup-container">
+                        <div class="mock-detailed-view p-6">
+                            <div class="flex items-start mb-4">
+                                <img src="https://www.google.com/s2/favicons?domain=collaborative.fund" class="h-5 w-5 mr-3 mt-1 rounded-sm" alt="Favicon">
+                                <div>
+                                    <p class="font-semibold">Tails, You Win - Collaborative Fund</p>
+                                    <a href="#" class="text-xs text-blue-600">https://collaborative.fund/blog/tails-you-win/</a>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">"Venture capital is a tail-driven business. You’ve likely heard that. Make 100 investments, and almost all of your return will come from five of them; most of your return from one or two."</p>
+                            <div class="flex justify-between items-center mt-4 text-xs text-gray-400">
+                                <span>Marked 3m ago</span>
+                                <div class="flex items-center space-x-2">
+                                    <span>Format & Brand</span>
+                                    <div class="w-10 h-6 bg-green-500 rounded-full p-1 flex items-center cursor-pointer">
+                                        <div class="w-4 h-4 bg-white rounded-full transform translate-x-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-             <div class="mt-16 text-center text-sm text-gray-500">
-                <p>First, pin the extension for easy access. Click the puzzle piece in your toolbar ( <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 3.5A1.5 1.5 0 0111.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0120 6.622V16.5a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 010 16.5v-13A1.5 1.5 0 011.5 2H6a1.5 1.5 0 011.5 1.5v1.5H10V3.5zM9 11v4h2v-4H9z"></path></svg> ) and then the pin icon next to Trace.</p>
+        </section>
+        
+        <!-- Feature 4: Reuse -->
+        <section class="feature-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-4xl font-bold tracking-tight mb-4">4. Reuse Effortlessly</h2>
+                    <p class="text-lg text-gray-600">Paste your clips anywhere. Your snippets appear with formatting and a source link, maintaining context and saving you time.</p>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <div class="mockup-container">
+                        <div class="mock-gmail">
+                            <div class="text-sm text-gray-500">
+                                <p>To: team@acme.com</p>
+                                <p>Subject: Interesting find for the project</p>
+                            </div>
+                            <div class="border-t my-3"></div>
+                            <p class="mb-4">Hi Team,</p>
+                            <p class="mb-4">Found a great quote for our presentation:</p>
+                            <blockquote class="pl-4 border-l-4 border-gray-200 text-gray-700 bg-gray-50 p-3 rounded-r-lg">
+                                "The best way to predict the future is to invent it." — <a href="#" class="text-blue-600 underline">Alan Kay on Innovation | Matter</a>
+                            </blockquote>
+                            <div class="h-10"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
     </main>
 
+    <!-- Shortcut and Get Started Section -->
+    <section class="bg-white py-20">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">The only shortcut you need to remember.</h2>
+            <p class="text-gray-500 text-lg mb-8">Access your knowledge from any tab, any application, anytime.</p>
+            <div>
+                 <span class="kbd-key text-base p-2 px-3">Ctrl</span> + <span class="kbd-key text-base p-2 px-3">Shift</span> + <span class="kbd-key text-base p-2 px-3">S</span>
+            </div>
+            
+             <div class="mt-16">
+                <div class="bg-gray-100 border border-gray-200 rounded-2xl p-8 md:p-12">
+                    <h3 class="text-2xl font-bold mb-6">Your First Steps</h3>
+                    <ol class="text-left space-y-5 max-w-xl mx-auto">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 font-bold text-blue-500 mr-4 text-xl h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">1</span>
+                            <span class="text-gray-700 text-lg mt-1">Find some text on any website and <strong>highlight it</strong> to make the 'Save' menu appear.</span>
+                        </li>
+                        <li class="flex items-start">
+                           <span class="flex-shrink-0 font-bold text-blue-500 mr-4 text-xl h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">2</span>
+                            <span class="text-gray-700 text-lg mt-1">Press the shortcut, search your clips, and use <kbd class="kbd-key">Tab</kbd> to create tags for filtering.</span>
+                        </li>
+                         <li class="flex items-start">
+                           <span class="flex-shrink-0 font-bold text-blue-500 mr-4 text-xl h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">3</span>
+                            <span class="text-gray-700 text-lg mt-1">Press <kbd class="kbd-key">Shift</kbd>+<kbd class="kbd-key">Enter</kbd> to see a clip's details, or just <kbd class="kbd-key">Enter</kbd> to copy it to your clipboard.</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-10 px-4">
+        <p class="text-gray-400">Reflex Extension</p>
+    </footer>
+
     <script>
-        // Command Palette Animation Logic
         document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('animation-container');
-            const typingTarget = 'Product Philosop';
 
-            const allItems = [
-                { match: "Interesting Reads", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-red-500"><!-- icon --></div><div><p class="text-gray-800">Interesting Reads</p><p class="text-gray-500 text-xs">1 item • Stash</p></div></div>` },
-                { match: "Quotes", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-orange-500"><!-- icon --></div><div><p class="text-gray-800">Quotes</p><p class="text-gray-500 text-xs">4 items • Stash</p></div></div>` },
-                { match: "Product Philosophy", html: `<div class="p-2.5 flex items-center space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-amber-500"><!-- icon --></div><div><p class="text-gray-800">Product Philosophy</p><p class="text-gray-500 text-xs">3 items • Stash</p></div></div>` },
-                { match: "obviousness", content: 'Trace isn’t about features. It’s about obviousness. It behaves the way your mind expects. — <a href="/" class="text-gray-400 hover:text-blue-600 underline">Trace: The Reflexive Memory Engine</a>', stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-400 mt-0.5"><!-- icon --></div><div><p class="text-gray-600">Trace isn't about features. It's about <span class="font-bold text-gray-800">obviousness</span>...</p><div class="flex items-center text-xs text-amber-600 mt-1"><span>Product Philosophy</span></div></div></div>`},
-                { match: "user expects", content: "If a user expects something—Esc to dismiss, arrow keys to navigate, Enter to commit—it should already work.", stash: "Product Philosophy", html: `<div class="p-2.5 flex items-start space-x-2.5"><div class="w-4 h-4 flex-shrink-0 text-gray-400 mt-0.5"><!-- icon --></div><div><p class="text-gray-600">If a <span class="font-bold text-gray-800">user expects</span> something—Esc to dismiss...</p><div class="flex items-center text-xs text-amber-600 mt-1"><span>Product Philosophy</span></div></div></div>` },
-            ];
-
-            function renderItems(itemsToRender, selector) {
-                const paletteContainer = container.querySelector(selector);
-                if (paletteContainer) {
-                    paletteContainer.innerHTML = itemsToRender.map((item, index) => 
-                        `<div id="item-${index}" class="palette-item" data-match="${item.match}" data-stash="${item.stash || ''}">${item.html}</div>`
-                    ).join('');
-                }
+            // Reusable function for the "Mark It" button animation
+            function animateMarkItButton(button) {
+                if (button.dataset.clicked) return;
+                button.dataset.clicked = true;
+                button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                button.classList.add('bg-green-500');
+                button.textContent = 'Saved!';
+                setTimeout(() => {
+                    button.classList.remove('bg-green-500');
+                    button.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                    button.textContent = 'Mark it';
+                    delete button.dataset.clicked;
+                }, 1500);
             }
 
-            async function runAnimation() {
-                // 1. Reset and Initial State
-                container.innerHTML = `
-                    <div id="palette-wrapper" class="w-full max-w-sm transition-opacity duration-300">
-                        <div id="query-container" class="w-full font-mono text-lg text-gray-800 mb-2">
-                           <span class="text-gray-500">;;</span><span id="typing-span"></span><span class="blinking-cursor"></span>
-                        </div>
-                        <div id="palette-container" class="w-full bg-white rounded-lg shadow-2xl border border-gray-200 font-sans text-sm overflow-hidden divide-y divide-gray-200">
-                        </div>
-                    </div>
-                `;
-                renderItems(allItems, '#palette-container');
+            // --- Mockup 1: Interactive Capture ---
+            const featureMarkItBtn = document.getElementById('mark-it-btn-feature');
+            featureMarkItBtn.addEventListener('click', () => animateMarkItButton(featureMarkItBtn));
+
+
+            // --- Mockup 2: Interactive Recall/Search Palette ---
+            const recallMockup = {
+                input: document.getElementById('recall-input'),
+                resultsContainer: document.getElementById('recall-results'),
+                tagsContainer: document.getElementById('recall-tags'),
+                allData: [
+                    { id: 1, title: 'The best way to predict the future is to invent it.', stash: 'Quotes', icon: '💡', tags: ['alan kay', 'innovation'] },
+                    { id: 2, title: 'In my whole life, I have known no wise people who didn\'t read all the time.', stash: 'Quotes', icon: '💬', tags: ['charlie munger', 'reading'] },
+                    { id: 3, title: 'Venture capital is a tail-driven business.', stash: 'Collaborative Fund', icon: '📈', tags: ['finance', 'investing'] },
+                    { id: 4, title: 'Presentation design ideas for Q3', stash: 'Project Ideas', icon: '🚀', tags: ['design', 'q3'] },
+                ],
+                activeTags: [],
+                activeIndex: 0,
+
+                init() {
+                    this.input.addEventListener('input', () => this.render());
+                    this.input.addEventListener('keydown', (e) => this.handleKeydown(e));
+                    this.render();
+                },
                 
-                const typingSpan = document.getElementById('typing-span');
-                const paletteItems = Array.from(container.querySelectorAll('.palette-item'));
-
-                // Pause to showcase the initial palette
-                await new Promise(r => setTimeout(r, 1500));
-
-                // 2. Animate Typing and Filtering
-                for (let i = 0; i <= typingTarget.length; i++) {
-                    await new Promise(r => setTimeout(r, 90));
-                    const currentText = typingTarget.substring(0, i);
-                    typingSpan.textContent = currentText;
-
-                    paletteItems.forEach(item => {
-                        const matchText = (item.dataset.match || "").toLowerCase();
-                        const stashText = (item.dataset.stash || "").toLowerCase();
-                        const isMatch = matchText.includes(currentText.toLowerCase()) || stashText.includes(currentText.toLowerCase());
-                        if (!isMatch) {
-                            item.classList.add('hidden');
-                        } else {
-                            item.classList.remove('hidden');
-                        }
+                render() {
+                    // Render tags
+                    this.tagsContainer.innerHTML = '';
+                    this.activeTags.forEach((tag, index) => {
+                        const pill = document.createElement('div');
+                        pill.className = `tag-pill ${index % 2 === 0 ? 'tag-pill-blue' : 'tag-pill-green'}`;
+                        pill.innerHTML = `<span>${tag}</span><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
+                        pill.onclick = () => {
+                            this.activeTags.splice(index, 1);
+                            this.render();
+                        };
+                        this.tagsContainer.appendChild(pill);
                     });
-                }
-                
-                await new Promise(r => setTimeout(r, 700));
 
-                // 3. Navigate
-                const visibleItems = paletteItems.filter(item => !item.classList.contains('hidden'));
-                const stashHeader = visibleItems.find(item => item.id === 'item-2');
-                const clipToSelect = visibleItems.find(item => item.id === 'item-3'); // The 'obviousness' clip
-                
-                if (stashHeader) {
-                    await new Promise(r => setTimeout(r, 800));
-                    stashHeader.classList.add('selected');
-                }
-                if (clipToSelect) {
-                    await new Promise(r => setTimeout(r, 800));
-                    if (stashHeader) stashHeader.classList.remove('selected');
-                    clipToSelect.classList.add('selected');
-                }
+                    // Filter data
+                    const query = this.input.value.toLowerCase();
+                    const filteredData = this.allData.filter(item => {
+                        const matchesQuery = query ? item.title.toLowerCase().includes(query) : true;
+                        const matchesTags = this.activeTags.every(tag => item.tags.includes(tag));
+                        return matchesQuery && matchesTags;
+                    });
+                    
+                    // Render results
+                    this.resultsContainer.innerHTML = '';
+                    if (filteredData.length === 0) {
+                        this.resultsContainer.innerHTML = `<div class="p-8 text-gray-500 text-sm text-center">No results found.</div>`;
+                        return;
+                    }
+                    
+                    filteredData.forEach((item, index) => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'mock-search-item';
+                        if (index === this.activeIndex) {
+                            itemEl.classList.add('active');
+                        }
+                        itemEl.innerHTML = `
+                            <div class="mr-4 text-xl">${item.icon}</div>
+                            <div class="flex-grow">
+                                <div class="font-semibold">${item.title}</div>
+                                <div class="text-sm ${index === this.activeIndex ? 'text-blue-200' : 'text-gray-500'}">in ${item.stash}</div>
+                            </div>
+                        `;
+                        this.resultsContainer.appendChild(itemEl);
+                    });
+                },
 
-                // 4. Paste
-                await new Promise(r => setTimeout(r, 1200));
-                const queryContainer = document.getElementById('query-container');
-                const paletteContainer = document.getElementById('palette-container');
-                
-                if(paletteContainer) {
-                    paletteContainer.style.transition = 'opacity 0.3s ease';
-                    paletteContainer.style.opacity = 0;
-                }
-               
-                await new Promise(r => setTimeout(r, 300));
-                
-                if (queryContainer) {
-                    queryContainer.className = 'w-full text-lg text-gray-800 font-sans';
-                    queryContainer.innerHTML = `<p>${allItems[3].content}<span class="blinking-cursor"></span></p>`;
-                }
-                 if (paletteContainer) paletteContainer.remove();
-                
-                // 5. Loop
-                await new Promise(r => setTimeout(r, 5000));
-                runAnimation();
-            }
+                handleKeydown(e) {
+                    // Add tag on Tab
+                    if (e.key === 'Tab' && this.input.value.trim() !== '') {
+                        e.preventDefault();
+                        const newTag = this.input.value.trim().toLowerCase();
+                        if (!this.activeTags.includes(newTag)) {
+                            this.activeTags.push(newTag);
+                        }
+                        this.input.value = '';
+                        this.render();
+                        return;
+                    }
 
-            runAnimation();
+                    // Remove tag on Backspace
+                    if (e.key === 'Backspace' && this.input.value === '' && this.activeTags.length > 0) {
+                        this.activeTags.pop();
+                        this.render();
+                        return;
+                    }
+
+                    const items = this.resultsContainer.querySelectorAll('.mock-search-item');
+                    if (items.length === 0) return;
+
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        this.activeIndex = (this.activeIndex + 1) % items.length;
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        this.activeIndex = (this.activeIndex - 1 + items.length) % items.length;
+                    }
+                     this.render();
+                }
+            };
+            
+            recallMockup.init();
+
         });
-
     </script>
 </body>
 </html>
